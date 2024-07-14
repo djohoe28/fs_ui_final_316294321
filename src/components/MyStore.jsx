@@ -24,14 +24,15 @@ const MyStore = {
 			requestOptions
 		)
 			.then((response) => response.json())
-			.then(this.fetchItemsSuccess)
-			.catch(this.fetchItemsError);
+			.then(this.fetchItemsSuccess.bind(this))
+			.catch(this.fetchItemsError.bind(this));
 	},
 
 	fetchItemsSuccess(result) {
 		const fetchedItems = result.results; // TODO: Apply filter(s)?
 		this.items = fetchedItems;
 		this.state = "done";
+		
 	},
 
 	fetchItemsError(error) {
