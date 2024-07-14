@@ -1,6 +1,10 @@
 import { createContext } from "react";
 import ThemeReducer from "./ThemeReducer";
 
-const ThemeContext = createContext({ state: "light", dispatch: ThemeReducer });
+var state = "light";
+const ThemeContext = createContext({
+	state: state,
+	dispatch: (action) => ThemeReducer(state, action),
+});
 
 export default ThemeContext;
