@@ -2,7 +2,7 @@ import { observer } from "mobx-react";
 import InventoryList from "./InventoryList";
 import MyStore from "./MyStore";
 
-const CartPage = observer(() => {
+const CartPage = observer(function CartPage() {
 	/**
 	 * TODO: Fine-tune CartPage versus InventoryPage;
 	 * ? Is this still an observer component when cart is mutable?

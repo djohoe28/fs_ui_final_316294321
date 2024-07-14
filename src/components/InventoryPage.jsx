@@ -2,7 +2,7 @@ import { observer } from "mobx-react";
 import InventoryList from "./InventoryList";
 import MyStore from "./MyStore";
 
-const InventoryPage = observer(() => {
+const InventoryPage = observer(function InventoryPage() {
 	// TODO: Fetch items dynamically once store is loaded..?
 	return (
 		<>
