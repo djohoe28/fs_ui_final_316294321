@@ -3,7 +3,7 @@ import TextDisplay from "./TextDisplay";
 
 const InventoryItem = observer(({ item }) => (
 	<li>
-		<TextDisplay getText={() => item.species.name} />
+		<TextDisplay getText={() => item.name} />
 	</li>
 ));
 

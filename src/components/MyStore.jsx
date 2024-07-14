@@ -20,7 +20,7 @@ const MyStore = {
 		};
 
 		fetch(
-			"https://pokeapi.co/api/v2/pokemon?limit=100000&offset=0",
+			"https://pokeapi.co/api/v2/pokemon?limit=1025&offset=0",
 			requestOptions
 		)
 			.then((response) => response.json())
@@ -29,7 +29,7 @@ const MyStore = {
 	},
 
 	fetchItemsSuccess(result) {
-		const fetchedItems = result.results; // TODO: Apply filter(s)?
+		const fetchedItems = result.results; // TODO: Recursive fetch? result.results: List<{ name, url }>
 		this.items = fetchedItems;
 		this.state = "done";
 		
@@ -42,10 +42,10 @@ const MyStore = {
 makeAutoObservable(MyStore);
 
 autorun(() => {
-	console.log(`MyStore items := ${JSON.stringify(MyStore.items)}`);
+	console.log("MyStore.items :=", MyStore.items);
 });
 autorun(() => {
-	console.log(`MyStore cart := ${JSON.stringify(MyStore.cart)}`);
+	console.log("MyStore cart :=", MyStore.cart);
 });
 autorun(() => {
 	console.log(`MyStore state := ${MyStore.state}`);
