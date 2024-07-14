@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import ThemeContext from "../modules/ThemeContext";
 import TextDisplay from "./TextDisplay";
 
