@@ -1,4 +1,4 @@
-const { makeAutoObservable, autorun } = require("mobx");
+import { autorun, makeAutoObservable } from "mobx";
 
 const MyStore = {
 	items: [],
