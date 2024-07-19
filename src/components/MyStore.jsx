@@ -4,6 +4,7 @@ const MyStore = {
 	items: [],
 	cart: [],
 	state: "pending", // state = "pending" | "done" | "error"
+	_count: 10, // 1025
 
 	init() {
 		this.fetchItems();
@@ -20,7 +21,7 @@ const MyStore = {
 		};
 
 		fetch(
-			"https://pokeapi.co/api/v2/pokemon?limit=1025&offset=0",
+			`https://pokeapi.co/api/v2/pokemon?limit=${this._count}&offset=0`,
 			requestOptions
 		)
 			.then((response) => response.json())
@@ -29,14 +30,40 @@ const MyStore = {
 	},
 
 	fetchItemsSuccess(result) {
+		const myHeaders = new Headers();
+		myHeaders.append("Accept", "application/json");
+
+		const requestOptions = {
+			method: "GET",
+			headers: myHeaders,
+			redirect: "follow",
+		};
+
 		const fetchedItems = result.results; // TODO: Recursive fetch? result.results: List<{ name, url }>
-		this.items = fetchedItems;
+		fetchedItems.forEach((item) => {
+			fetch(item.url, requestOptions)
+				.then((response) => response.json())
+				.then(this.fetchItemDetailsSuccess.bind(this))
+				.catch(this.fetchItemsError.bind(this));
+		});
+	},
+
+	fetchItemDetailsSuccess(result) {
+		this.items.push(result);
+		if (this.items.length === this._count) {
+			this.finalizeItems();
+		}
+	},
+
+	finalizeItems() {
+		this.items.sort((a, b) => a.order - b.order); // TODO: Mutative!
 		this.state = "done";
-		
+		window.exports = { store: this };
 	},
 
 	fetchItemsError(error) {
 		this.state = "error";
+		console.error(error);
 	},
 };
 makeAutoObservable(MyStore);
