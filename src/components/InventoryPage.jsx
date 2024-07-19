@@ -8,7 +8,19 @@ const InventoryPage = observer(function InventoryPage() {
 		<>
 			<h1>Inventory</h1>
 			<span>Store State = {MyStore.state}</span>
-			<InventoryList items={MyStore.items} />
+			<table>
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Name</th>
+						<th>Price</th>
+						<th>Quantity</th>
+					</tr>
+				</thead>
+				<tbody>
+					<InventoryList items={MyStore.items} />
+				</tbody>
+			</table>
 		</>
 	);
 });
