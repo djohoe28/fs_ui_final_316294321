@@ -2,7 +2,7 @@ import { autorun, makeAutoObservable } from "mobx";
 
 const MyStore = {
 	items: [],
-	cart: [],
+	cart: {},
 	state: "pending", // state = "pending" | "done" | "error"
 	_count: 10, // 1025
 
@@ -64,6 +64,13 @@ const MyStore = {
 	fetchItemsError(error) {
 		this.state = "error";
 		console.error(error);
+	},
+
+	// TODO: Make sure this is MobX-compliant.
+	setItemQuantity(itemId, quantity) {
+		quantity > 0
+			? (this.cart[itemId] = quantity)
+			: delete this.cart[itemId];
 	},
 };
 makeAutoObservable(MyStore);

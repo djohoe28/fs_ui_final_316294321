@@ -13,7 +13,7 @@ const CartPage = observer(function CartPage() {
 	return (
 		<>
 			<h1>Cart</h1>
-			<InventoryList items={MyStore.cart} />
+			{/* <InventoryList items={MyStore.cart} /> */}
 		</>
 	);
 });
