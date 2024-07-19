@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import MyStore from "./MyStore";
 
 const InventoryItem = observer(function InventoryItem({ item }) {
-	const [quantity, setQuantity] = useState(0);
+	const [quantity, setQuantity] = useState(MyStore.cart[item.id] ?? 0);
 	const handleQuantityChange = useCallback(
 		(e) => {
 			// TODO: Make sure that no recursive calls occur from these
