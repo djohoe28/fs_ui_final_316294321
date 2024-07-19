@@ -1,6 +1,7 @@
 import { useCallback, useContext, useState } from "react";
 import UserContext from "../modules/UserContext";
 import Users from "../database/users";
+import TextDisplay from "./TextDisplay";
 
 const LoginCard = () => {
 	// External States & Contexts
@@ -40,11 +41,26 @@ const LoginCard = () => {
 		[usernameInputState, passwordInputState]
 	);
 
+	const handleReset = useCallback(
+		(e) => {
+			e.preventDefault();
+			setUsernameInputState("");
+			setPasswordInputState("");
+			userContext.dispatch({ type: "LOGOUT" });
+		},
+		[userContext]
+	);
+
 	// Render
 	return (
-		<form onSubmit={handleSubmit}>
+		<form onSubmit={handleSubmit} onReset={handleReset}>
 			<h1>Login</h1>
-			<p>Current User: {userContext.state?.name ?? "null"}</p>
+			<p>
+				Current User:{" "}
+				<TextDisplay
+					getText={() => userContext.state?.name ?? "null"}
+				/>
+			</p>
 			<p>
 				Available Users: [{[...Users.keys()].join(", ")}]; (password =
 				username)
@@ -66,6 +82,7 @@ const LoginCard = () => {
 				onChange={handlePasswordChange}
 			/>
 			<button type="submit">Login</button>
+			<button type="reset">Logout</button>
 		</form>
 	);
 };
