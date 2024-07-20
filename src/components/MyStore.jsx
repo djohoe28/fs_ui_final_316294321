@@ -1,4 +1,4 @@
-import { autorun, makeAutoObservable } from "mobx";
+import { autorun, entries, makeAutoObservable } from "mobx";
 
 const MyStore = {
 	items: [],
@@ -56,7 +56,7 @@ const MyStore = {
 	},
 
 	finalizeItems() {
-		this.items.sort((a, b) => a.order - b.order); // TODO: Mutative!
+		this.items = this.items.slice().sort((a, b) => a.order - b.order); // TODO: Mutative?
 		this.state = "done";
 		window.exports = { store: this };
 	},
@@ -71,6 +71,23 @@ const MyStore = {
 		quantity > 0
 			? (this.cart[itemId] = quantity)
 			: delete this.cart[itemId];
+	},
+
+	
+	get itemsById() {
+		// SEE: https://mobx.js.org/collection-utilities.html#collection-utilities-
+		return new Map(this.items.map(item => [`${item.id}`, item]));
+	},
+
+	get total() {
+		// NOTE: Aggregate total; iterate through items in cart, and add their price times quantity to total.
+		let total = 0;
+		entries(this.cart).forEach(([itemId, quantity]) => {
+			const item = this.itemsById.get(itemId);
+			const price = item.base_experience;
+			total += price * quantity;
+		});
+		return total;
 	},
 };
 makeAutoObservable(MyStore);
