@@ -1,7 +1,7 @@
 import { observer } from "mobx-react";
 import InventoryItem from "./InventoryItem";
 
-const InventoryList = observer(function InventoryList({ items }) {
+const InventoryItems = observer(function InventoryItems({ items }) {
 	return (
 		<>
 			{items.map((item) => (
@@ -11,4 +11,4 @@ const InventoryList = observer(function InventoryList({ items }) {
 	);
 });
 
-export default InventoryList;
+export default InventoryItems;

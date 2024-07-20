@@ -1,6 +1,6 @@
 import { observer } from "mobx-react";
-import InventoryList from "./InventoryList";
 import MyStore from "./MyStore";
+import InventoryTable from "./InventoryTable";
 
 const CartPage = observer(function CartPage() {
 	/**
@@ -13,7 +13,7 @@ const CartPage = observer(function CartPage() {
 	return (
 		<>
 			<h1>Cart</h1>
-			{/* <InventoryList items={MyStore.cart} /> */}
+			<InventoryTable items={MyStore.cart} />
 		</>
 	);
 });
