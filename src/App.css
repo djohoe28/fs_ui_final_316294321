@@ -40,3 +40,12 @@
 .read-the-docs {
   color: #888;
 }
+
+/* TODO: Style Here */
+img {
+  width: 5em;
+}
+
+input[type="number"] {
+  width: 3em;
+}
