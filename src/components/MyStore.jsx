@@ -1,8 +1,8 @@
-import { autorun, entries, makeAutoObservable } from "mobx";
+import { autorun, entries, makeAutoObservable, values } from "mobx";
 
 const MyStore = {
 	items: [],
-	cart: {},
+	cart: [],
 	state: "pending", // state = "pending" | "done" | "error"
 	_count: 10, // 1025
 
@@ -68,22 +68,42 @@ const MyStore = {
 
 	// TODO: Make sure this is MobX-compliant.
 	setItemQuantity(itemId, quantity) {
-		quantity > 0
-			? (this.cart[itemId] = quantity)
-			: delete this.cart[itemId];
+		// quantity > 0
+		// 	? (this.cart.find((index, item_id)[itemId] = quantity))
+		// 	: delete this.cart[itemId];
+		// NOTE: Delete item from cart
+		if (quantity <= 0) {
+			this.cart = this.cart.filter(({ id }) => itemId !== id);
+			return;
+		}
+		// NOTE: Find item in cart (in case it was already added)
+		const item = this.cart.find(({ id }) => id === itemId);
+		// NOTE: Set item quantity in cart (add if missing, update if existing)
+		item
+			? (item.quantity = quantity)
+			: this.cart.push({ id: itemId, quantity });
 	},
 
-	
+	get itemIds() {
+		let ids = [];
+		this.items.forEach(({ id }) => ids.push({ id }));
+		return ids;
+	},
+
 	get itemsById() {
 		// SEE: https://mobx.js.org/collection-utilities.html#collection-utilities-
-		return new Map(this.items.map(item => [`${item.id}`, item]));
+		return new Map(this.items.map((item) => [item.id, item]));
+	},
+
+	getQuantityById(itemId) {
+		return this.cart.find(({ id }) => id === itemId)?.quantity;
 	},
 
 	get total() {
 		// NOTE: Aggregate total; iterate through items in cart, and add their price times quantity to total.
 		let total = 0;
-		entries(this.cart).forEach(([itemId, quantity]) => {
-			const item = this.itemsById.get(itemId);
+		values(this.cart).forEach(({ id, quantity }) => {
+			const item = this.itemsById.get(id);
 			const price = item.base_experience;
 			total += price * quantity;
 		});

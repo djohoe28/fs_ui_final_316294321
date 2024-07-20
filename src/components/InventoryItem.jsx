@@ -5,8 +5,14 @@ import MyStore from "./MyStore";
 import ImageDisplay from "./ImageDisplay";
 
 const InventoryItem = observer(function InventoryItem({ item }) {
-	const [quantity, setQuantity] = useState(`${MyStore.cart[item.id] ?? 0}`);
+	const [quantity, setQuantity] = useState(
+		`${MyStore.getQuantityById(item.id) ?? 0}`
+	);
 	const quantityAsNumber = useMemo(() => parseInt(quantity), [quantity]);
+	const _itemDetails = useMemo(
+		() => MyStore.itemsById.get(item.id),
+		[item.id]
+	);
 	const handleQuantityChange = useCallback(
 		(e) => {
 			// TODO: Make sure that no recursive calls occur from these
@@ -34,18 +40,18 @@ const InventoryItem = observer(function InventoryItem({ item }) {
 	const handleDelete = useCallback((e) => setQuantity("0"), [setQuantity]);
 	useEffect(() => {
 		// NOTE: Performance-wise, this belongs in the handler; Concern-wise, this is a re/action => effect
-		MyStore.setItemQuantity(item.id, quantityAsNumber);
+		MyStore.setItemQuantity(_itemDetails.id, quantityAsNumber);
 	}, [quantityAsNumber]);
 	return (
 		<tr>
 			<td>
-				<TextDisplay getText={() => item.id} />
+				<TextDisplay getText={() => _itemDetails.id} />
 			</td>
 			<td>
-				<TextDisplay getText={() => item.name} />
+				<TextDisplay getText={() => _itemDetails.name} />
 			</td>
 			<td>
-				<TextDisplay getText={() => item.base_experience} />$
+				<TextDisplay getText={() => _itemDetails.base_experience} />$
 			</td>
 			<td>
 				<input
@@ -62,7 +68,7 @@ const InventoryItem = observer(function InventoryItem({ item }) {
 						=
 						<TextDisplay
 							getText={() =>
-								quantityAsNumber * item.base_experience
+								quantityAsNumber * _itemDetails.base_experience
 							}
 						/>
 						$
@@ -71,7 +77,9 @@ const InventoryItem = observer(function InventoryItem({ item }) {
 			</td>
 			<td>
 				<ImageDisplay
-					getSrc={() => item.sprites.other.dream_world.front_default}
+					getSrc={() =>
+						_itemDetails.sprites.other.dream_world.front_default
+					}
 				/>
 			</td>
 		</tr>
