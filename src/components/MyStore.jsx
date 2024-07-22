@@ -1,16 +1,43 @@
-import { autorun, entries, makeAutoObservable, values } from "mobx";
+import { autorun, makeAutoObservable } from "mobx";
 
 const MyStore = {
+	_count: 10, // 1025
 	logoBlob: undefined,
 	logoBlobSrc: "",
-	items: [],
-	cart: [],
-	state: "pending", // state = "pending" | "done" | "error"
-	_count: 10, // 1025
+	items: new Map(), // NOTE: Map<id: number, item_details: { name: string, price: number, order: number, image_src: string }>
+	cart: new Map(), // NOTE: Map<id: number, cart_details: { order: number, quantity: number }>
+
+	get keys() {
+		return this.items.keys();
+	},
+
+	get itemsAsArray() {
+		return Array.from(this.items).sort((a, b) => a[1].order - b[1].order);
+	},
+
+	get cartAsArray() {
+		return Array.from(this.cart).sort((a, b) => a[1].order - b[1].order);
+	},
+
+	get progress() {
+		return this.items.size / this._count;
+	},
+
+	get total() {
+		// NOTE: Aggregate total; iterate through items in cart, and add their price times quantity to total.
+		let total = 0;
+		for (const [key, cart_value] in this.cartAsArray) {
+			const price = this.items.get(key).price;
+			const quantity = cart_value.quantity;
+			total += price * quantity;
+		}
+		return total;
+	},
 
 	init() {
 		this.fetchLogo();
 		this.fetchItems();
+		window.exports = { store: this };
 	},
 
 	fetchLogo() {
@@ -28,37 +55,27 @@ const MyStore = {
 	},
 
 	fetchItems() {
-		const myHeaders = new Headers();
-		myHeaders.append("Accept", "application/json");
-
-		const requestOptions = {
-			method: "GET",
-			headers: myHeaders,
-			redirect: "follow",
-		};
-
 		fetch(
 			`https://pokeapi.co/api/v2/pokemon?limit=${this._count}&offset=0`,
-			requestOptions
+			{
+				method: "GET",
+				headers: { Accept: "application/json" },
+				redirect: "follow",
+			}
 		)
 			.then((items_res) => items_res.json())
-			.then((items_json) => this.parseItems(items_json)) // .then(this.fetchItemsSuccess.bind(this))
+			.then((items_json) => this.parseItems(items_json))
 			.catch((error) => this.handleError(error));
 	},
 
 	parseItems(items_json) {
-		const myHeaders = new Headers();
-		myHeaders.append("Accept", "application/json");
-
-		const requestOptions = {
-			method: "GET",
-			headers: myHeaders,
-			redirect: "follow",
-		};
-
 		const fetchedItems = items_json.results; // TODO: Recursive fetch? result.results: List<{ name, url }>
 		fetchedItems.forEach((item) => {
-			fetch(item.url, requestOptions)
+			fetch(item.url, {
+				method: "GET",
+				headers: { Accept: "application/json" },
+				redirect: "follow",
+			})
 				.then((details_res) => details_res.json())
 				.then((details_json) => this.parseItemDetails(details_json))
 				.catch((error) => this.handleError(error));
@@ -72,12 +89,6 @@ const MyStore = {
 		}
 	},
 
-	finalizeItems() {
-		this.items = this.items.slice().sort((a, b) => a.order - b.order); // TODO: Mutative?
-		this.state = "done";
-		window.exports = { store: this };
-	},
-
 	handleError(error) {
 		this.state = "error";
 		console.error(error);
@@ -85,59 +96,15 @@ const MyStore = {
 
 	// TODO: Make sure this is MobX-compliant.
 	setItemQuantity(itemId, quantity) {
-		// quantity > 0
-		// 	? (this.cart.find((index, item_id)[itemId] = quantity))
-		// 	: delete this.cart[itemId];
-		// NOTE: Delete item from cart
-		if (quantity <= 0) {
-			this.cart = this.cart.filter(({ id }) => itemId !== id);
-			return;
-		}
-		// NOTE: Find item in cart (in case it was already added)
-		const item = this.cart.find(({ id }) => id === itemId);
-		// NOTE: Set item quantity in cart (add if missing, update if existing)
-		item
-			? (item.quantity = quantity)
-			: this.cart.push({ id: itemId, quantity });
-	},
-
-	get itemIds() {
-		let ids = [];
-		this.items.forEach(({ id }) => ids.push({ id }));
-		return ids;
-	},
-
-	get itemsById() {
-		// SEE: https://mobx.js.org/collection-utilities.html#collection-utilities-
-		return new Map(this.items.map((item) => [item.id, item]));
-	},
-
-	getQuantityById(itemId) {
-		return this.cart.find(({ id }) => id === itemId)?.quantity;
-	},
-
-	get total() {
-		// NOTE: Aggregate total; iterate through items in cart, and add their price times quantity to total.
-		let total = 0;
-		values(this.cart).forEach(({ id, quantity }) => {
-			const item = this.itemsById.get(id);
-			const price = item.base_experience;
-			total += price * quantity;
-		});
-		return total;
+		quantity <= 0
+			? this.cart.delete(itemId)
+			: this.items.set(itemId, {
+					quantity: quantity,
+					order: this.items.get(itemId).order ?? Date.now(),
+			  });
 	},
 };
 makeAutoObservable(MyStore);
-
-autorun(() => {
-	console.log("MyStore.items :=", MyStore.items);
-});
-autorun(() => {
-	console.log("MyStore cart :=", MyStore.cart);
-});
-autorun(() => {
-	console.log(`MyStore state := ${MyStore.state}`);
-});
 
 MyStore.init();
 
