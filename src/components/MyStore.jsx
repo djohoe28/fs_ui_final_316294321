@@ -1,13 +1,30 @@
 import { autorun, entries, makeAutoObservable, values } from "mobx";
 
 const MyStore = {
+	logoBlob: undefined,
+	logoBlobSrc: "",
 	items: [],
 	cart: [],
 	state: "pending", // state = "pending" | "done" | "error"
 	_count: 10, // 1025
 
 	init() {
+		this.fetchLogo();
 		this.fetchItems();
+	},
+
+	fetchLogo() {
+		fetch(
+			"https://raw.githubusercontent.com/PokeAPI/media/master/logo/pokeapi_256.png"
+		)
+			.then((logo_res) => logo_res.blob())
+			.then((logo_blob) => this.setLogoFromBlob(logo_blob))
+			.catch((error) => console.error(error));
+	},
+
+	setLogoFromBlob(logo_blob) {
+		this.logoBlob = logo_blob;
+		this.logoBlobSrc = URL.createObjectURL(this.logoBlob);
 	},
 
 	fetchItems() {
@@ -24,12 +41,12 @@ const MyStore = {
 			`https://pokeapi.co/api/v2/pokemon?limit=${this._count}&offset=0`,
 			requestOptions
 		)
-			.then((response) => response.json())
-			.then(this.fetchItemsSuccess.bind(this))
-			.catch(this.fetchItemsError.bind(this));
+			.then((items_res) => items_res.json())
+			.then((items_json) => this.parseItems(items_json)) // .then(this.fetchItemsSuccess.bind(this))
+			.catch((error) => this.handleError(error));
 	},
 
-	fetchItemsSuccess(result) {
+	parseItems(items_json) {
 		const myHeaders = new Headers();
 		myHeaders.append("Accept", "application/json");
 
@@ -39,17 +56,17 @@ const MyStore = {
 			redirect: "follow",
 		};
 
-		const fetchedItems = result.results; // TODO: Recursive fetch? result.results: List<{ name, url }>
+		const fetchedItems = items_json.results; // TODO: Recursive fetch? result.results: List<{ name, url }>
 		fetchedItems.forEach((item) => {
 			fetch(item.url, requestOptions)
-				.then((response) => response.json())
-				.then(this.fetchItemDetailsSuccess.bind(this))
-				.catch(this.fetchItemsError.bind(this));
+				.then((details_res) => details_res.json())
+				.then((details_json) => this.parseItemDetails(details_json))
+				.catch((error) => this.handleError(error));
 		});
 	},
 
-	fetchItemDetailsSuccess(result) {
-		this.items.push(result);
+	parseItemDetails(details_json) {
+		this.items.push(details_json);
 		if (this.items.length === this._count) {
 			this.finalizeItems();
 		}
@@ -61,7 +78,7 @@ const MyStore = {
 		window.exports = { store: this };
 	},
 
-	fetchItemsError(error) {
+	handleError(error) {
 		this.state = "error";
 		console.error(error);
 	},
