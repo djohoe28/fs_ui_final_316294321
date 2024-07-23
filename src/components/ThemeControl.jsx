@@ -1,9 +1,9 @@
 import { useContext } from "react";
 import ThemeContext from "../modules/ThemeContext";
-import TextDisplay from "./TextDisplay";
-import { observer } from "mobx-react";
+// import TextDisplay from "./TextDisplay";
+// import { observer } from "mobx-react"; // NOTE: Not an observer.
 
-const ThemeControl = observer(function ThemeControl() {
+const ThemeControl = function ThemeControl() {
 	const themeContext = useContext(ThemeContext);
 	return (
 		<div>
@@ -14,10 +14,11 @@ const ThemeControl = observer(function ThemeControl() {
 					})
 				}
 			>
-				Current Mode: <TextDisplay getText={() => themeContext.state} />
+				{/* Current Mode: <TextDisplay getText={() => themeContext.state} /> // TODO: Not an observer? */}
+				Current Mode: {themeContext.state}
 			</button>
 		</div>
 	);
-});
+};
 
 export default ThemeControl;

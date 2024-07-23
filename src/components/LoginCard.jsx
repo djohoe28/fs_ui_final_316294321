@@ -1,7 +1,7 @@
 import { useCallback, useContext, useState } from "react";
 import UserContext from "../modules/UserContext";
 import Users from "../database/users";
-import TextDisplay from "./TextDisplay";
+// import TextDisplay from "./TextDisplay";
 
 const LoginCard = () => {
 	// External States & Contexts
@@ -23,7 +23,7 @@ const LoginCard = () => {
 		(e) => {
 			setPasswordInputState(e.target.value);
 		},
-		[passwordInputState, setPasswordInputState]
+		[setPasswordInputState]
 	);
 
 	const handleSubmit = useCallback(
@@ -38,7 +38,7 @@ const LoginCard = () => {
 				},
 			});
 		},
-		[usernameInputState, passwordInputState]
+		[userContext, usernameInputState, passwordInputState]
 	);
 
 	const handleReset = useCallback(
@@ -57,9 +57,10 @@ const LoginCard = () => {
 			<h1>Login</h1>
 			<p>
 				Current User:{" "}
-				<TextDisplay
+				{/* <TextDisplay
 					getText={() => userContext.state?.name ?? "null"}
-				/>
+				/> {// TODO: Not an observer? */}
+				{userContext.state?.name ?? "null"}
 			</p>
 			<p>
 				Available Users: [{[...Users.keys()].join(", ")}]; (password =
