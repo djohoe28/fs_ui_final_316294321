@@ -1,22 +1,24 @@
 import { observer } from "mobx-react";
-import TextDisplay from "./TextDisplay";
+// import TextDisplay from "./TextDisplay";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import MyStore from "./MyStore";
 import ImageDisplay from "./ImageDisplay";
 
-const InventoryItem = observer(function InventoryItem({ item }) {
+const InventoryItem = observer(function InventoryItem({ itemId }) {
 	const [quantity, setQuantity] = useState(
-		`${MyStore.getQuantityById(item.id) ?? 0}`
+		`${MyStore.cart.get(itemId)?.quantity ?? 0}`
 	);
 	const quantityAsNumber = useMemo(() => parseInt(quantity), [quantity]);
 	const _itemDetails = useMemo(
-		() => MyStore.itemsById.get(item.id),
-		[item.id]
+		() => {
+			return MyStore.items.get(itemId);
+		},
+		[itemId]
 	);
 	const handleQuantityChange = useCallback(
-		(e) => {
+		(event) => {
 			// TODO: Make sure that no recursive calls occur from these
-			if (e.target.value.length === 0) {
+			if (event.target.value.length === 0) {
 				/**
 				 // NOTE:
 				 * Non-valid string input will revert to 0.
@@ -31,27 +33,30 @@ const InventoryItem = observer(function InventoryItem({ item }) {
 			} else {
 				// NOTE: Force input string into a positive integer string (fallback: quantityAsNumber)
 				setQuantity(
-					`${Math.abs(parseInt(e.target.value) ?? quantityAsNumber)}`
+					`${Math.abs(parseInt(event.target.value) ?? quantityAsNumber)}`
 				);
 			}
 		},
-		[setQuantity]
+		[quantityAsNumber, setQuantity]
 	);
-	const handleDelete = useCallback((e) => setQuantity("0"), [setQuantity]);
+	const handleDelete = useCallback(() => setQuantity("0"), [setQuantity]);
 	useEffect(() => {
 		// NOTE: Performance-wise, this belongs in the handler; Concern-wise, this is a re/action => effect
-		MyStore.setItemQuantity(_itemDetails.id, quantityAsNumber);
-	}, [quantityAsNumber]);
+		MyStore.setItemQuantity(itemId, quantityAsNumber);
+	}, [itemId, quantityAsNumber]);
 	return (
 		<tr>
 			<td>
-				<TextDisplay getText={() => _itemDetails.id} />
+				{/* <TextDisplay getText={() => itemId} /> // TODO: Not an observer? */}
+				{itemId}
 			</td>
 			<td>
-				<TextDisplay getText={() => _itemDetails.name} />
+				{/* <TextDisplay getText={() => _itemDetails.name} /> // TODO: Not an observer? */}
+				{_itemDetails.name}
 			</td>
 			<td>
-				<TextDisplay getText={() => _itemDetails.base_experience} />$
+				{/* <TextDisplay getText={() => _itemDetails.price} />$ // TODO: Not an observer? */}
+				{_itemDetails.price}$
 			</td>
 			<td>
 				<input
@@ -66,11 +71,12 @@ const InventoryItem = observer(function InventoryItem({ item }) {
 				{quantityAsNumber > 0 ? (
 					<>
 						=
-						<TextDisplay
+						{/* <TextDisplay
 							getText={() =>
-								quantityAsNumber * _itemDetails.base_experience
+								quantityAsNumber * _itemDetails.price
 							}
-						/>
+						/> // TODO: Not an observer? */}
+						{quantityAsNumber * _itemDetails.price}
 						$
 					</>
 				) : null}
@@ -78,9 +84,11 @@ const InventoryItem = observer(function InventoryItem({ item }) {
 			<td>
 				<ImageDisplay
 					getSrc={() =>
-						_itemDetails.sprites.other.dream_world.front_default
+						_itemDetails.image_src ?? MyStore.logoBlobSrc
 					}
 				/>
+				{/* <TextDisplay getText={() => _itemDetails.order} /> // TODO: Not an observer? */}
+				{_itemDetails.order}
 			</td>
 		</tr>
 	);

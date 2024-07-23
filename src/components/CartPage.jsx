@@ -13,7 +13,7 @@ const CartPage = observer(function CartPage() {
 	return (
 		<>
 			<h1>Cart</h1>
-			<InventoryTable items={MyStore.cart} />
+			<InventoryTable itemIds={MyStore.cart_keys} />
 		</>
 	);
 });

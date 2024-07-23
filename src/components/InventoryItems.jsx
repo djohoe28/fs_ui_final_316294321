@@ -1,14 +1,15 @@
-import { observer } from "mobx-react";
+// import { observer } from "mobx-react"; // NOTE: Not an observer.
 import InventoryItem from "./InventoryItem";
 
-const InventoryItems = observer(function InventoryItems({ items }) {
+// TODO: react/prop-types
+const InventoryItems = function InventoryItems({ itemIds }) {
 	return (
 		<>
-			{items.map((item) => (
-				<InventoryItem key={item.id} item={item} />
+			{itemIds.map((itemId) => (
+				<InventoryItem key={itemId} itemId={itemId} />
 			))}
 		</>
 	);
-});
+};
 
 export default InventoryItems;
