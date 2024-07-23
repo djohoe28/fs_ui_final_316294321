@@ -4,7 +4,7 @@ const UserReducer = (state, action) => {
 	console.log(action);
 	switch (action.type) {
 		case "LOGIN":
-			const user = Users.get(action.value.username);
+			const user = Users.get(action.value.username); // TODO: no-case-declarations
 			if (!user) {
 				const users = [...Users.keys()].join(", ");
 				alert(
