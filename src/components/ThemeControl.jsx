@@ -6,18 +6,16 @@ import ThemeContext from "../modules/ThemeContext";
 const ThemeControl = function ThemeControl() {
 	const themeContext = useContext(ThemeContext);
 	return (
-		<div>
-			<button
-				onClick={() =>
-					themeContext.dispatch({
-						type: "TOGGLE",
-					})
-				}
-			>
-				{/* Current Mode: <TextDisplay getText={() => themeContext.state} /> // TODO: Not an observer? */}
-				Current Mode: {themeContext.state}
-			</button>
-		</div>
+		<button
+			onClick={() =>
+				themeContext.dispatch({
+					type: "TOGGLE",
+				})
+			}
+		>
+			{/* Current Mode: <TextDisplay getText={() => themeContext.state} /> // TODO: Not an observer? */}
+			Current Mode: {themeContext.state}
+		</button>
 	);
 };
 
