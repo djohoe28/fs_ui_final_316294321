@@ -10,7 +10,7 @@ import { observer } from "mobx-react";
 const LoadProgress = observer(function LoadProgress({ getValue, getMax }) {
 	const value = getValue();
 	const max = getMax();
-	const progress = getValue() / getMax();
+	const progress = value / max;
 	return <>
 		<span>{value}/{max}</span>
 		<progress value={value} max={max} />

@@ -1,17 +1,17 @@
 import { observer } from "mobx-react";
 // import TextDisplay from "./TextDisplay";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import MyStore from "./MyStore";
+import store from "./MyStore";
 import ImageDisplay from "./ImageDisplay";
 
 const InventoryItem = observer(function InventoryItem({ itemId }) {
 	const [quantity, setQuantity] = useState(
-		`${MyStore.cart.get(itemId)?.quantity ?? 0}`
+		`${store.cart.get(itemId)?.quantity ?? 0}`
 	);
 	const quantityAsNumber = useMemo(() => parseInt(quantity), [quantity]);
 	const _itemDetails = useMemo(
 		() => {
-			return MyStore.items.get(itemId);
+			return store.items.get(itemId);
 		},
 		[itemId]
 	);
@@ -42,7 +42,7 @@ const InventoryItem = observer(function InventoryItem({ itemId }) {
 	const handleDelete = useCallback(() => setQuantity("0"), [setQuantity]);
 	useEffect(() => {
 		// NOTE: Performance-wise, this belongs in the handler; Concern-wise, this is a re/action => effect
-		MyStore.setItemQuantity(itemId, quantityAsNumber);
+		store.setItemQuantity(itemId, quantityAsNumber);
 	}, [itemId, quantityAsNumber]);
 	return (
 		<tr>
@@ -84,7 +84,7 @@ const InventoryItem = observer(function InventoryItem({ itemId }) {
 			<td>
 				<ImageDisplay
 					getSrc={() =>
-						_itemDetails.image_src ?? MyStore.logoBlobSrc
+						_itemDetails.image_src ?? store.logoBlobSrc
 					}
 				/>
 				{/* <TextDisplay getText={() => _itemDetails.order} /> // TODO: Not an observer? */}

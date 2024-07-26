@@ -1,33 +1,49 @@
-import { keys, makeAutoObservable } from "mobx";
+import { keys, makeAutoObservable, reaction } from "mobx"; // TODO: set?
 
-const MyStore = {
-	_count: 10, // 1025
-	logoBlob: undefined,
-	logoBlobSrc: "",
-	items: new Map(), // NOTE: Map<id: number, item_details: { name: string, price: number, order: number, image_src: string }>
-	cart: new Map(), // NOTE: Map<id: number, cart_details: { order: number, quantity: number }>
+class MyStore {
+	constructor() {
+		//#region Properties
+		this.count = 9; // 1025
+		this.logoBlob = undefined;
+		this.logoBlobSrc = "";
+		this.items = new Map(); // NOTE: Map<id: number, item_details: { name: string, price: number, order: number, image_src: string }>
+		this.cart = new Map(); // NOTE: Map<id: number, cart_details: { order: number, quantity: number }>
+		//#endregion
+		makeAutoObservable(this, {
+			// count: false,
+			// logoBlob: false,
+			// logoBlobSrc: false,
+			// items: false,
+			// cart: false,
+		});
+		//#region Reactions
+		this.disposer = reaction(() => this.count, (value, previousValue, reaction) => {
+			// NOTE: React to changes in count.
+			console.log({ value, previousValue, reaction });
+			this.cart_keys.filter(key => key > this.count).forEach(key => {
+				console.log(key, this.item_keys.indexOf(key), this.count);
+				this.cart.delete(key);
+			})
+			this.items.clear();
+			this.fetchItems();
+		});
+		//#endregion
+		this.fetchLogo();
+		this.fetchItems();
+		window.exports = { store: this }; // NOTE: For debugging purposes.
+	}
 
 	get item_keys() {
 		return keys(this.items).slice().sort((a, b) => this.items.get(a).order - this.items.get(b).order); // TODO: Refactor?
-	},
+	}
 
 	get cart_keys() {
 		return keys(this.cart).slice().sort((a, b) => this.cart.get(a).order - this.cart.get(b).order); // TODO: Refactor?
-	},
-
-	// TODO: Delete?
-	// get itemsAsArray() {
-	// 	return Array.from(this.items).sort((a, b) => a[1].order - b[1].order);
-	// },
+	}
 
 	get cartAsArray() {
 		return Array.from(this.cart).sort((a, b) => a[1].order - b[1].order);
-	},
-
-	// TODO: Delete?
-	// get progress() {
-	// 	return this.items.size / this._count;
-	// },
+	}
 
 	get total() {
 		// NOTE: Aggregate total; iterate through items in cart, and add their price times quantity to total.
@@ -38,30 +54,24 @@ const MyStore = {
 			total += price * quantity;
 		});
 		return total;
-	},
+	}
 
-	init() {
-		this.fetchLogo();
-		this.fetchItems();
-		window.exports = { store: this };
-	},
-
-	fetchLogo() {
+	fetchLogo = () => {
 		fetch(
 			"https://raw.githubusercontent.com/PokeAPI/media/master/logo/pokeapi_256.png"
 		)
 			.then((logo_res) => logo_res.blob())
 			.then((logo_blob) => this.setLogoFromBlob(logo_blob))
 			.catch((error) => console.error(error));
-	},
+	}
 
-	setLogoFromBlob(logo_blob) {
+	setLogoFromBlob = (logo_blob) => {
 		this.logoBlob = logo_blob;
 		this.logoBlobSrc = URL.createObjectURL(this.logoBlob);
-	},
+	}
 
-	fetchItems() {
-		fetch(`https://pokeapi.co/api/v2/pokemon?limit=${this._count}&offset=0`, {
+	fetchItems = () => {
+		fetch(`https://pokeapi.co/api/v2/pokemon?limit=${this.count}&offset=0`, {
 			method: "GET",
 			headers: { Accept: "application/json" },
 			redirect: "follow",
@@ -69,9 +79,9 @@ const MyStore = {
 			.then((items_res) => items_res.json())
 			.then((items_json) => this.parseItems(items_json))
 			.catch((error) => this.handleError(error));
-	},
+	}
 
-	parseItems(items_json) {
+	parseItems = (items_json) => {
 		const fetchedItems = items_json.results; // TODO: Recursive fetch? result.results: List<{ name, url }>
 		fetchedItems.forEach((item) => {
 			fetch(item.url, {
@@ -83,9 +93,9 @@ const MyStore = {
 				.then((details_json) => this.parseItemDetails(details_json))
 				.catch((error) => this.handleError(error));
 		});
-	},
+	}
 
-	parseItemDetails(details_json) {
+	parseItemDetails = (details_json) => {
 		const key = details_json.id;
 		const value = {
 			name: details_json.name,
@@ -94,25 +104,33 @@ const MyStore = {
 			image_src: details_json.sprites.front_default,
 		};
 		this.items.set(key, value);
-	},
+	}
 
-	handleError(error) {
+	handleError = (error) => {
 		this.state = "error";
 		console.error(error);
-	},
+	}
 
 	// TODO: Make sure this is MobX-compliant.
-	setItemQuantity(itemId, quantity) {
+	setItemQuantity = (itemId, quantity) => {
 		quantity <= 0
 			? this.cart.delete(itemId)
 			: this.cart.set(itemId, {
 				quantity: quantity,
 				order: this.cart.get(itemId)?.order ?? Date.now(),
 			});
-	},
-};
-makeAutoObservable(MyStore);
+	}
+}
 
-MyStore.init();
+/**
+ * // TODO:
+ * [mobx] Observable 'MyStore@1.parseItems' being read outside a reactive context.
+ * [mobx] Observable 'MyStore@5.setLogoFromBlob' being read outside a reactive context. inventory:13851:25
+ * [mobx] Observable 'MyStore@1.parseItemDetails' being read outside a reactive context. inventory:13851:25
+ * [mobx] Observable 'MyStore@1.setItemQuantity' being read outside a reactive context. 
+ * observerComponent@http://localhost:5173/node_modules/.vite/deps/mobx-react.js?v=9b6d7153:421:12
+ * InventoryItems2@http://localhost:5173/src/components/InventoryItems.jsx?t=1722004635895:18:48
+ */
+const store = new MyStore();
 
-export default MyStore;
+export default store;

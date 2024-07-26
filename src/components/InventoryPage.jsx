@@ -1,5 +1,5 @@
 import { observer } from "mobx-react";
-import MyStore from "./MyStore";
+import store from "./MyStore";
 import InventoryTable from "./InventoryTable";
 import LoadProgress from "./LoadProgress";
 
@@ -8,8 +8,8 @@ const InventoryPage = observer(function InventoryPage() {
 	return (
 		<>
 			<h1>Inventory</h1>
-			<LoadProgress getValue={() => MyStore.items.size} getMax={() => MyStore._count} />
-			<InventoryTable itemIds={MyStore.item_keys} />
+			<LoadProgress getValue={() => store.items.size} getMax={() => store.count} />
+			<InventoryTable itemIds={store.item_keys} />
 		</>
 	);
 });
