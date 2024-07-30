@@ -2,14 +2,14 @@ import { Outlet } from "react-router-dom";
 import Navbar from "./Navbar";
 import UserProvider from "./UserProvider";
 import ThemeProvider from "./ThemeProvider";
-import AdminOptions from "./AdminOptions";
+import UserOptions from "./UserOptions";
 
 const HomePage = () => (
 	<UserProvider>
 		<ThemeProvider>
 			<Navbar />
 			<div className="nav_user_options">
-				<AdminOptions />
+				<UserOptions/>
 			</div>
 			<div className="nav_main_content">
 				<Outlet />
