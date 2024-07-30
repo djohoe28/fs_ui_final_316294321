@@ -2,24 +2,18 @@ import { Outlet } from "react-router-dom";
 import Navbar from "./Navbar";
 import UserProvider from "./UserProvider";
 import ThemeProvider from "./ThemeProvider";
-import UserOptions from "./UserOptions";
+// import UserOptions from "./UserOptions";
+import Footer from "./Footer";
 
+// NOTE:	Personally I would have called this "OutletWrapper" or something,
+//			but that's how it shows up in the repository, so let's go with that
 const HomePage = () => (
 	<UserProvider>
 		<ThemeProvider>
 			<Navbar />
-			<div className="nav_user_options">
-				<UserOptions/>
-			</div>
-			<div className="nav_main_content">
-				<Outlet />
-			</div>
-			<footer className="nav_footer_credits">
-				<p>Credits</p>
-				<a href="https://www.telhai.tech/">Made for Tel Hai Engineering</a>
-				<a href="https://pokeapi.co/">Data by PokeAPI</a>
-				<a href="https://www.exchangerate-api.com">Rates By Exchange Rate API</a>
-			</footer>
+			{/* <UserOptions /> */}
+			<Outlet />
+			<Footer />
 		</ThemeProvider>
 	</UserProvider>
 );
