@@ -5,23 +5,25 @@ import { useCallback } from "react";
 import store from "./MyStore";
 
 const CartPage = observer(function CartPage() {
-	/**
-	 * TODO: Fine-tune CartPage versus InventoryPage;
-	 * ? Is this still an observer component when cart is mutable?
-	 * ? Are there differences between Inventory vs Cart lists?
-	 * ? Add a little "X" to delete an item from the cart?
-	 * ? Group cart items (count) by their ID?
-	 */
 
+	//#region Callbacks
 	const handleSubmit = useCallback((event) => {
 		event.preventDefault();
 		store.checkout();
 	}, []);
+
+	const handleReset = useCallback((event)=>{
+		event.preventDefault();
+		store.emptyCart();
+	}, []);
+	//#endregion
+
 	return (
-		<form onSubmit={handleSubmit}>
+		<form onSubmit={handleSubmit} onReset={handleReset}>
 			<h1>Cart</h1>
 			<InventoryTable itemIds={MyStore.cart_keys} />
 			<button type="submit">Checkout</button>
+			<button type="reset">Empty Cart</button>
 		</form>
 	);
 });

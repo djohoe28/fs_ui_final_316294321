@@ -144,6 +144,10 @@ class MyStore {
 		alert("Order submitted! Don't worry - we already charged you and we know where you live ;)");
 		this.cart.clear();
 	}
+
+	emptyCart = () => {
+		this.cart.clear();
+	}
 }
 
 /**
