@@ -3,6 +3,7 @@ import { observer } from "mobx-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import store from "./MyStore";
 import ImageDisplay from "./ImageDisplay";
+import PriceDisplay from "./PriceDisplay";
 
 const InventoryItem = observer(function InventoryItem({ itemId }) {
 	const [quantity, setQuantity] = useState(
@@ -56,7 +57,7 @@ const InventoryItem = observer(function InventoryItem({ itemId }) {
 			</td>
 			<td>
 				{/* <TextDisplay getText={() => _itemDetails.price} />$ // TODO: Not an observer? */}
-				{_itemDetails.price}$
+				<PriceDisplay getPrice={() => _itemDetails.price} />
 			</td>
 			<td>
 				<input
@@ -76,8 +77,7 @@ const InventoryItem = observer(function InventoryItem({ itemId }) {
 								quantityAsNumber * _itemDetails.price
 							}
 						/> // TODO: Not an observer? */}
-						{quantityAsNumber * _itemDetails.price}
-						$
+						<PriceDisplay getPrice={() => quantityAsNumber * _itemDetails.price} />
 					</>
 				) : null}
 			</td>

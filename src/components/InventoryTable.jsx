@@ -1,7 +1,7 @@
 // import { observer } from "mobx-react"; // NOTE: Not an observer.
 import InventoryItems from "./InventoryItems";
 import store from "./MyStore";
-import TextDisplay from "./TextDisplay";
+import PriceDisplay from "./PriceDisplay";
 
 // TODO: react/prop-types
 const InventoryTable = (function InventoryTable({ itemIds }) {
@@ -24,7 +24,7 @@ const InventoryTable = (function InventoryTable({ itemIds }) {
 					<th colSpan={2} />
 					<th>Total:</th>
 					<th>
-						<TextDisplay getText={() => store.total /* TODO: Observer? */ } />$
+						<PriceDisplay getPrice={() => store.total /* TODO: Observer? */ } />
 					</th>
 				</tr>
 			</tfoot>
