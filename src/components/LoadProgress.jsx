@@ -10,12 +10,13 @@ import { observer } from "mobx-react";
 const LoadProgress = observer(function LoadProgress({ getValue, getMax }) {
 	const value = getValue();
 	const max = getMax();
-	const progress = value / max;
-	return <>
+	const progress = Math.round(100 * value / max);
+	const hidden = value >= max; // HACK: We could use CSS instead, but I figured this'd be more performant.
+	return hidden ? <></> : <div className="load-progress">
 		<span>{value}/{max}</span>
 		<progress value={value} max={max} />
-		<span>{Math.round(progress * 100)}%</span>
-	</>;
+		<span>{progress}%</span>
+	</div>;
 });
 
 export default LoadProgress;
