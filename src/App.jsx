@@ -5,6 +5,7 @@ import InventoryPage from "./components/InventoryPage";
 import LoginCard from "./components/LoginCard";
 import CartPage from "./components/CartPage";
 import ErrorPage from "./components/ErrorPage";
+import UserOptions from "./components/UserOptions";
 
 function App() {
 	return (
@@ -14,6 +15,7 @@ function App() {
 					<Route path="/login" element={<LoginCard />} />
 					<Route path="/inventory" element={<InventoryPage />} />
 					<Route path="/cart" element={<CartPage />} />
+					<Route path="/options" element={<UserOptions />} />
 					<Route path="*" element={<ErrorPage />} />
 				</Route>
 			</Routes>
