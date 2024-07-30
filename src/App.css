@@ -54,3 +54,19 @@ body.dark-mode * {
   color: white;
   background-color: black;
 }
+
+nav, footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.load-progress {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.hidden {
+  display: none;
+}
