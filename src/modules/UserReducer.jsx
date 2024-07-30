@@ -1,10 +1,8 @@
-import { values } from "mobx";
 import Users from "../database/users";
 
 const UserReducer = (state, action) => {
-	console.log(action);
 	let user; // SEE: eslint(no-case-declarations)
-	const usernames = values(Users).map(user => user.username).join(", ");
+	const usernames = [...Users.values()].map(user => user.username).join(", ");
 	switch (action.type) {
 		case "TRY_LOGIN":
 			user = Users.get(action.value.username);
