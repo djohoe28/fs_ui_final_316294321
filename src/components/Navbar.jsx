@@ -8,13 +8,13 @@ import UserContext from "../modules/UserContext";
 const Navbar = () => {
 	const userContext = useContext(UserContext);
 	return (
-		<nav className="navbar">
+		<nav>
 			<ImageDisplay getSrc={() => store.logoBlobSrc} />
-			<Link to="login">Login</Link>
+			{userContext.state ? <Link to="options">[{userContext.state?.name}]</Link> : <Link to="login">Login</Link>}
 			<Link to="inventory">Inventory</Link>
-			<Link to="cart">Cart</Link>
+			{userContext.state ? <Link to="cart">Cart</Link> : <></>}
 			<ThemeControl />
-			Welcome {userContext.state?.name ?? ""}!
+			{/* Welcome {userContext.state?.name ?? ""}! */}
 		</nav>
 	)
 };

@@ -1,6 +1,7 @@
 import { useCallback, useContext, useState } from "react";
 import UserContext from "../modules/UserContext";
 import Users from "../database/users";
+import { Navigate } from "react-router-dom";
 // import TextDisplay from "./TextDisplay";
 
 const LoginCard = () => {
@@ -54,37 +55,37 @@ const LoginCard = () => {
 
 	// Render
 	return (
-		<form onSubmit={handleSubmit} onReset={handleReset}>
-			<h1>Login</h1>
-			<p>
-				Current User: {userContext.state?.name ?? "null"}
-				{/* <TextDisplay
-					getText={() => userContext.state?.name ?? "null"}
-				/> {// TODO: Not an observer? */}
-
-			</p>
-			<p>
-				Available Users: [{[...Users.keys()].join(", ")}]; (password is same as username)
-			</p>
-			<label htmlFor="username">Username:</label>
-			<input
-				type="text"
-				name="username"
-				placeholder="Username"
-				value={usernameInputState}
-				onChange={handleUsernameChange}
-			/>
-			<label htmlFor="password">Password:</label>
-			<input
-				type="password"
-				name="password"
-				placeholder="Password"
-				value={passwordInputState}
-				onChange={handlePasswordChange}
-			/>
-			<button type="submit">Login</button>
-			<button type="reset">Logout</button>
-		</form>
+		userContext.state ? <Navigate to="../options" /> :
+			<form onSubmit={handleSubmit} onReset={handleReset}>
+				<h1>Login</h1>
+				<p>
+					Available Users: [{[...Users.keys()].join(", ")}]; (password is same as username)
+				</p>
+				<p>
+					<label htmlFor="username">Username: </label>
+					<input
+						type="text"
+						name="username"
+						placeholder="Username"
+						value={usernameInputState}
+						onChange={handleUsernameChange}
+					/>
+				</p>
+				<p>
+					<label htmlFor="password">Password: </label>
+					<input
+						type="password"
+						name="password"
+						placeholder="Password"
+						value={passwordInputState}
+						onChange={handlePasswordChange}
+					/>
+				</p>
+				<p>
+					<button type="submit">Login</button>
+					<button type="reset">Reset</button>
+				</p>
+			</form>
 	);
 };
 
