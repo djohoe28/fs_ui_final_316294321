@@ -12,7 +12,7 @@ import store from "./MyStore";
  */
 const PriceDisplay = observer(function PriceDisplay({ getPrice }) {
     const userContext = useContext(UserContext);
-    const currency = useMemo(() => userContext.state?.currency ?? "USD", [userContext.state?.currency]);
+    const currency = useMemo(() => userContext.state?.currency ?? store.currency, [userContext.state?.currency]);
     const price = getPrice(); // TODO: Memoize? (Does this memoize in TextDisplay?)
     const convertedPrice = price * store.rates.get(currency);
     const convertedPriceLocalized = convertedPrice.toLocaleString(undefined, { style: "currency", currency: currency });

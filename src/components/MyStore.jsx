@@ -9,6 +9,7 @@ class MyStore {
 		this.items = new Map(); // NOTE: Map<id: number, item_details: { name: string, price: number, order: number, image_src: string }>
 		this.cart = new Map(); // NOTE: Map<id: number, cart_details: { order: number, quantity: number }>
 		this.rates = new Map();
+		this.currency = "USD"; // NOTE: This is expected to be the currency used under `items.price` as well.
 		//#endregion
 		makeAutoObservable(this, {
 			// count: false,
@@ -59,7 +60,7 @@ class MyStore {
 	}
 
 	fetchRates = () => {
-		fetch("https://open.er-api.com/v6/latest/USD").then((rates_res) => rates_res.json()).then((rates_json) => this.setRates(rates_json)).catch((error) => this.handleError(error));
+		fetch(`https://open.er-api.com/v6/latest/${this.currency}`).then((rates_res) => rates_res.json()).then((rates_json) => this.setRates(rates_json)).catch((error) => this.handleError(error));
 	}
 
 	setRates = (rates_json) => {

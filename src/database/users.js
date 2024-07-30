@@ -1,3 +1,4 @@
+// TODO: Preferred Currency?
 const Users = new Map([
 	[
 		"admin",
@@ -6,6 +7,7 @@ const Users = new Map([
 			password: "admin",
 			name: "Administrator",
 			type: "admin",
+			currency: "USD",
 		},
 	],
 	[
@@ -13,8 +15,9 @@ const Users = new Map([
 		{
 			username: "user",
 			password: "user",
-			name: "Default User",
+			name: "John Smith",
 			type: "user",
+			currency: "ILS",
 		},
 	],
 ]);
