@@ -55,13 +55,15 @@ const AdminOptions = observer(function AdminOptions() {
 		store.count = parseInt(state);
 	}, [state]);
 	return <form onSubmit={handleSubmit}>
-		<h2>Admin Options</h2>
-		<label htmlFor="generation">Latest Available Stock: </label>
-		<select name="generation" onChange={handleSelectChange}>
-			{generations.map(({ name, value }) => <option key={value} value={value}>#{value} ~ {name}</option>)}
-		</select>
-		<button type="reset">Reset</button>
-		<button type="submit">Submit</button>
+		<details open>
+			<summary>Admin Options</summary>
+			<label htmlFor="generation">Latest Available Stock: </label>
+			<select name="generation" onChange={handleSelectChange}>
+				{generations.map(({ name, value }) => <option key={value} value={value}>#{value} ~ {name}</option>)}
+			</select>
+			<button type="reset">Reset</button>
+			<button type="submit">Submit</button>
+		</details>
 	</form>
 });
 

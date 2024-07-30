@@ -18,13 +18,15 @@ const CustomerOptions = observer(function CustomerOptions() {
 		})
 	}, [state, userContext]);
 	return <form onSubmit={handleSubmit}>
-		<h2>Customer Options</h2>
-		<label htmlFor="currency">Currency: </label>
-		<select name="currency" onChange={handleSelectChange}>
-			{keys(store.rates).map(currencyKey => <option key={currencyKey} value={currencyKey}>{currencyKey} (= {Number(1.0 / store.rates.get(currencyKey)).toLocaleString(undefined, { style: "currency", currency: store.currency })})</option>)}
-		</select>
-		<button type="reset">Reset</button>
-		<button type="submit">Submit</button>
+		<details open>
+			<summary>Customer Options</summary>
+			<label htmlFor="currency">Currency: </label>
+			<select name="currency" onChange={handleSelectChange}>
+				{keys(store.rates).map(currencyKey => <option key={currencyKey} value={currencyKey}>{currencyKey} (= {Number(1.0 / store.rates.get(currencyKey)).toLocaleString(undefined, { style: "currency", currency: store.currency })})</option>)}
+			</select>
+			<button type="reset">Reset</button>
+			<button type="submit">Submit</button>
+		</details>
 	</form>
 });
 
