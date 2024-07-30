@@ -29,9 +29,10 @@ const LoginCard = () => {
 	const handleSubmit = useCallback(
 		(e) => {
 			e.preventDefault();
+			// TODO: Triggered twice because of React Strict Mode(?)
 			// NOTE: Dispatch takes care of data validation.
 			userContext.dispatch({
-				type: "LOGIN",
+				type: "TRY_LOGIN",
 				value: {
 					username: usernameInputState,
 					password: passwordInputState,
@@ -56,15 +57,14 @@ const LoginCard = () => {
 		<form onSubmit={handleSubmit} onReset={handleReset}>
 			<h1>Login</h1>
 			<p>
-				Current User:{" "}
+				Current User: {userContext.state?.name ?? "null"}
 				{/* <TextDisplay
 					getText={() => userContext.state?.name ?? "null"}
 				/> {// TODO: Not an observer? */}
-				{userContext.state?.name ?? "null"}
+
 			</p>
 			<p>
-				Available Users: [{[...Users.keys()].join(", ")}]; (password =
-				username)
+				Available Users: [{[...Users.keys()].join(", ")}]; (password is same as username)
 			</p>
 			<label htmlFor="username">Username:</label>
 			<input
