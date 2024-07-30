@@ -8,6 +8,7 @@ class MyStore {
 		this.logoBlobSrc = "";
 		this.items = new Map(); // NOTE: Map<id: number, item_details: { name: string, price: number, order: number, image_src: string }>
 		this.cart = new Map(); // NOTE: Map<id: number, cart_details: { order: number, quantity: number }>
+		this.rates = new Map();
 		//#endregion
 		makeAutoObservable(this, {
 			// count: false,
@@ -30,11 +31,12 @@ class MyStore {
 		//#endregion
 		this.fetchLogo();
 		this.fetchItems();
+		this.fetchRates();
 		window.exports = { store: this }; // NOTE: For debugging purposes.
 	}
 
 	get item_keys() {
-		return keys(this.items).slice().sort((a, b) => this.items.get(a).order - this.items.get(b).order); // TODO: Refactor?
+		return keys(this.items).slice().sort((a, b) => this.items.get(a).order - this.items.get(b).order); // NOTE: 
 	}
 
 	get cart_keys() {
@@ -54,6 +56,17 @@ class MyStore {
 			total += price * quantity;
 		});
 		return total;
+	}
+
+	fetchRates = () => {
+		fetch("https://open.er-api.com/v6/latest/USD").then((rates_res) => rates_res.json()).then((rates_json) => this.setRates(rates_json)).catch((error) => this.handleError(error));
+	}
+
+	setRates = (rates_json) => {
+		this.rates = new Map();
+		for (const [key, value] of Object.entries(rates_json["rates"])) {
+			this.rates.set(key, value);
+		}
 	}
 
 	fetchLogo = () => {
@@ -98,9 +111,10 @@ class MyStore {
 	parseItemDetails = (details_json) => {
 		const key = details_json.id;
 		const value = {
+			id: details_json.id,
 			name: details_json.name,
 			price: details_json.base_experience,
-			order: details_json.order,
+			order: details_json.id, // NOTE: The `order` API property is currently flawed, so we use `id` instead.
 			image_src: details_json.sprites.front_default,
 		};
 		this.items.set(key, value);
@@ -119,6 +133,15 @@ class MyStore {
 				quantity: quantity,
 				order: this.cart.get(itemId)?.order ?? Date.now(),
 			});
+	}
+
+	checkout = () => {
+		// NOTODO: Implement.
+		// NOTE:	Since the APIs are mostly accessed via the `store` object,
+		//			it's probably fine to do this here.
+		//			Plus, you get immediate access to the `cart` property from here!
+		alert("Order submitted! Don't worry - we already charged you and we know where you live ;)");
+		this.cart.clear();
 	}
 }
 
