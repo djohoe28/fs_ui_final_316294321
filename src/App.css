@@ -49,3 +49,8 @@ img {
 input[type="number"] {
   width: 3em;
 }
+
+body.dark-mode * {
+  color: white;
+  background-color: black;
+}
