@@ -2,6 +2,7 @@ import { useCallback, useState } from "react";
 import { observer } from "mobx-react";
 import store from "./MyStore";
 import ResetButton from "./ResetButton";
+import SubmitButton from "./SubmitButton";
 
 const generations = [
 	{
@@ -54,6 +55,7 @@ const AdminOptions = observer(function AdminOptions() {
 	const handleSubmit = useCallback((e) => {
 		e.preventDefault();
 		store.itemCount = parseInt(state);
+		alert("Changes submitted!");
 	}, [state]);
 	return <form onSubmit={handleSubmit}>
 		<details open>
@@ -63,7 +65,7 @@ const AdminOptions = observer(function AdminOptions() {
 				{generations.map(({ name, value }) => <option key={value} value={value}>#{value} ~ {name}</option>)}
 			</select>
 			<ResetButton text="Reset" />
-			<button type="submit">Submit</button>
+			<SubmitButton text="Submit" />
 		</details>
 	</form>
 });

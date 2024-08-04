@@ -4,6 +4,7 @@ import InventoryTable from "./InventoryTable";
 import { useCallback } from "react";
 import store from "./MyStore";
 import ResetButton from "./ResetButton";
+import SubmitButton from "./SubmitButton";
 
 const CartPage = observer(function CartPage() {
 
@@ -11,6 +12,7 @@ const CartPage = observer(function CartPage() {
 	const handleSubmit = useCallback((event) => {
 		event.preventDefault();
 		store.checkout();
+		alert("Changes submitted!");
 	}, []);
 
 	const handleReset = useCallback((event)=>{
@@ -23,7 +25,7 @@ const CartPage = observer(function CartPage() {
 		<form onSubmit={handleSubmit} onReset={handleReset}>
 			<h1>Cart</h1>
 			<InventoryTable itemIds={MyStore.cart_keys} />
-			<button type="submit">Checkout</button>
+			<SubmitButton text="Checkout" />
 			<ResetButton text="Clear Cart" />
 		</form>
 	);

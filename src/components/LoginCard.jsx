@@ -3,6 +3,7 @@ import UserContext from "../modules/UserContext";
 import Users from "../database/users";
 import { Navigate } from "react-router-dom";
 import ResetButton from "./ResetButton";
+import SubmitButton from "./SubmitButton";
 // import TextDisplay from "./TextDisplay";
 
 const LoginCard = () => {
@@ -40,6 +41,7 @@ const LoginCard = () => {
 					password: passwordInputState,
 				},
 			});
+			alert("Changes submitted!");
 		},
 		[userContext, usernameInputState, passwordInputState]
 	);
@@ -83,8 +85,8 @@ const LoginCard = () => {
 					/>
 				</p>
 				<p>
-					<button type="submit">Login</button>
 					<ResetButton text="Reset" />
+					<SubmitButton text="Submit" />
 				</p>
 			</form>
 	);

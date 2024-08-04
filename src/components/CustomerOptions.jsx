@@ -4,6 +4,7 @@ import store from "./MyStore";
 import { keys } from "mobx";
 import UserContext from "../modules/UserContext";
 import ResetButton from "./ResetButton";
+import SubmitButton from "./SubmitButton";
 
 const CustomerOptions = observer(function CustomerOptions() {
 	const userContext = useContext(UserContext);
@@ -30,7 +31,7 @@ const CustomerOptions = observer(function CustomerOptions() {
 				})}
 			</select>
 			<ResetButton text="Reset" />
-			<button type="submit">Submit</button>
+			<SubmitButton text="Submit" />
 		</details>
 	</form>
 });
