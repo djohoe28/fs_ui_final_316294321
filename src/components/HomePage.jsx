@@ -2,7 +2,6 @@ import { Outlet } from "react-router-dom";
 import Navbar from "./Navbar";
 import UserProvider from "./UserProvider";
 import ThemeProvider from "./ThemeProvider";
-// import UserOptions from "./UserOptions";
 import Footer from "./Footer";
 
 // NOTE:	Personally I would have called this "OutletWrapper" or something,
@@ -11,7 +10,6 @@ const HomePage = () => (
 	<UserProvider>
 		<ThemeProvider>
 			<Navbar />
-			{/* <UserOptions /> */}
 			<Outlet />
 			<Footer />
 		</ThemeProvider>

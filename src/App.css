@@ -51,11 +51,30 @@ input[type="number"] {
 	width: 3em;
 }
 
+a {
+	padding-left: 0.25em;
+	padding-right: 0.25em;
+}
+
+button {
+	margin-left: 0.25em;
+	margin-right: 0.25em;
+}
+
+details {
+	margin-top: 0.25em;
+	margin-bottom: 0.25em;
+}
+
 nav,
 footer {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+}
+
+footer {
+	margin-top: 1em;
 }
 
 .load-progress {

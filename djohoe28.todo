@@ -1,5 +1,4 @@
-[ ] TODO: Widen Navbar & Footer padding
 [ ] TODO: Add in-site documentation(?)
 [ ] TODO: Add code documentation (BRIEF)
 [ ] TODO: Remove TODOs before submission
-[ ] TODO: Check why Home Page resets Theme state etc.
+[ ] TODO: Find way to prevent direct (URL) access from resetting contexts.
