@@ -59,9 +59,11 @@ const InventoryItem = observer(function InventoryItem({ itemId }) {
 				<button type="reset" onClick={handleDelete}>
 					x
 				</button>
+			</td>
+			<td>
 				{quantityAsNumber > 0 ? (
 					<>
-						=<PriceDisplay getPrice={() => quantityAsNumber * _itemDetails.price} />
+						<PriceDisplay getPrice={() => quantityAsNumber * _itemDetails.price} />
 					</>
 				) : null}
 			</td>

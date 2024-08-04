@@ -12,6 +12,7 @@ const InventoryTable = (function InventoryTable({ itemIds }) {
 					<th>Name</th>
 					<th>Price</th>
 					<th>Quantity</th>
+					<th>Total</th>
 					<th>Image</th>
 				</tr>
 			</thead>
@@ -21,7 +22,7 @@ const InventoryTable = (function InventoryTable({ itemIds }) {
 			<tfoot>
 				<tr>
 					<th colSpan={2} />
-					<th>Total:</th>
+					<th>Combined Total:</th>
 					<th>
 						<PriceDisplay getPrice={() => store.total} />
 					</th>
