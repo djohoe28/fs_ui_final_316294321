@@ -1,3 +1,4 @@
 [ ] TODO: Implement CSS style (w/ body.dark class)
 [ ] TODO: Add in-site documentation(?)
+[ ] TODO: Refactor InventoryItem "total" to another column (0 = empty)
 [ ] TODO: Remove TODOs before submission
