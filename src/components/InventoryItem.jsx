@@ -1,5 +1,4 @@
 import { observer } from "mobx-react";
-// import TextDisplay from "./TextDisplay";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import store from "./MyStore";
 import ImageDisplay from "./ImageDisplay";
@@ -41,15 +40,12 @@ const InventoryItem = observer(function InventoryItem({ itemId }) {
 	return (
 		<tr>
 			<td>
-				{/* <TextDisplay getText={() => itemId} /> // TODO: Not an observer? */}
 				{itemId}
 			</td>
 			<td>
-				{/* <TextDisplay getText={() => _itemDetails.name} /> // TODO: Not an observer? */}
 				{_itemDetails.name}
 			</td>
 			<td>
-				{/* <TextDisplay getText={() => _itemDetails.price} />$ // TODO: Not an observer? */}
 				<PriceDisplay getPrice={() => _itemDetails.price} />
 			</td>
 			<td>
@@ -65,13 +61,7 @@ const InventoryItem = observer(function InventoryItem({ itemId }) {
 				</button>
 				{quantityAsNumber > 0 ? (
 					<>
-						=
-						{/* <TextDisplay
-							getText={() =>
-								quantityAsNumber * _itemDetails.price
-							}
-						/> // TODO: Not an observer? */}
-						<PriceDisplay getPrice={() => quantityAsNumber * _itemDetails.price} />
+						=<PriceDisplay getPrice={() => quantityAsNumber * _itemDetails.price} />
 					</>
 				) : null}
 			</td>
@@ -81,7 +71,6 @@ const InventoryItem = observer(function InventoryItem({ itemId }) {
 						_itemDetails.image_src ?? store.logoBlobSrc
 					}
 				/>
-				{/* <TextDisplay getText={() => _itemDetails.order} /> // TODO: Not an observer? */}
 				{_itemDetails.order}
 			</td>
 		</tr>

@@ -1,4 +1,3 @@
-// import { observer } from "mobx-react"; // NOTE: Not an observer.
 import InventoryItems from "./InventoryItems";
 import store from "./MyStore";
 import PriceDisplay from "./PriceDisplay";
@@ -24,7 +23,7 @@ const InventoryTable = (function InventoryTable({ itemIds }) {
 					<th colSpan={2} />
 					<th>Total:</th>
 					<th>
-						<PriceDisplay getPrice={() => store.total /* TODO: Observer? */ } />
+						<PriceDisplay getPrice={() => store.total} />
 					</th>
 				</tr>
 			</tfoot>
