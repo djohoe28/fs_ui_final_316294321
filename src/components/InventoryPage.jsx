@@ -8,7 +8,7 @@ const InventoryPage = observer(function InventoryPage() {
 	return (
 		<>
 			<h1>Inventory</h1>
-			<LoadProgress getValue={() => store.items.size} getMax={() => store.count} />
+			<LoadProgress getValue={() => store.items.size} getMax={() => store.itemCount} />
 			<InventoryTable itemIds={store.item_keys} />
 		</>
 	);

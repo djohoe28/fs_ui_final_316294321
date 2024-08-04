@@ -1,29 +1,24 @@
-import { keys, makeAutoObservable, reaction } from "mobx"; // TODO: set?
+import { keys, makeAutoObservable, reaction } from "mobx";
 
 class MyStore {
 	constructor() {
 		//#region Properties
-		this.count = 9; // 1025
 		this.logoBlob = undefined;
 		this.logoBlobSrc = "";
+		this.defaultCurrency = "USD"; // NOTE: This is expected to be the currency used under `items.price` as well.
+		this.itemCount = 9; // 0 <= count <= 1025
 		this.items = new Map(); // NOTE: Map<id: number, item_details: { name: string, price: number, order: number, image_src: string }>
 		this.cart = new Map(); // NOTE: Map<id: number, cart_details: { order: number, quantity: number }>
-		this.rates = new Map();
-		this.currency = "USD"; // NOTE: This is expected to be the currency used under `items.price` as well.
+		this.rates = new Map(); // NOTE: Map<currency: string, rate: number> (where `1 ${defaultCurrency} = ${rate} ${currency})
 		//#endregion
-		makeAutoObservable(this, {
-			// count: false,
-			// logoBlob: false,
-			// logoBlobSrc: false,
-			// items: false,
-			// cart: false,
-		});
+		makeAutoObservable(this);
 		//#region Reactions
-		this.disposer = reaction(() => this.count, (value, previousValue, reaction) => {
+		this.disposer = reaction(() => this.itemCount, (value, previousValue, reaction) => {
+			// TODO: Add rates?
 			// NOTE: React to changes in count.
 			console.log({ value, previousValue, reaction });
-			this.cart_keys.filter(key => key > this.count).forEach(key => {
-				console.log(key, this.item_keys.indexOf(key), this.count);
+			this.cart_keys.filter(key => key > this.itemCount).forEach(key => {
+				console.log(key, this.item_keys.indexOf(key), this.itemCount);
 				this.cart.delete(key);
 			})
 			this.items.clear();
@@ -33,19 +28,14 @@ class MyStore {
 		this.fetchLogo();
 		this.fetchItems();
 		this.fetchRates();
-		window.exports = { store: this }; // NOTE: For debugging purposes.
 	}
 
 	get item_keys() {
-		return keys(this.items).slice().sort((a, b) => this.items.get(a).order - this.items.get(b).order); // NOTE: 
+		return keys(this.items).slice().sort((a, b) => this.items.get(a).order - this.items.get(b).order);
 	}
 
 	get cart_keys() {
-		return keys(this.cart).slice().sort((a, b) => this.cart.get(a).order - this.cart.get(b).order); // TODO: Refactor?
-	}
-
-	get cartAsArray() {
-		return Array.from(this.cart).sort((a, b) => a[1].order - b[1].order);
+		return keys(this.cart).slice().sort((a, b) => this.cart.get(a).order - this.cart.get(b).order);
 	}
 
 	get total() {
@@ -60,7 +50,7 @@ class MyStore {
 	}
 
 	fetchRates = () => {
-		fetch(`https://open.er-api.com/v6/latest/${this.currency}`).then((rates_res) => rates_res.json()).then((rates_json) => this.setRates(rates_json)).catch((error) => this.handleError(error));
+		fetch(`https://open.er-api.com/v6/latest/${this.defaultCurrency}`).then((rates_res) => rates_res.json()).then((rates_json) => this.setRates(rates_json)).catch((error) => this.handleError(error));
 	}
 
 	setRates = (rates_json) => {
@@ -85,7 +75,7 @@ class MyStore {
 	}
 
 	fetchItems = () => {
-		fetch(`https://pokeapi.co/api/v2/pokemon?limit=${this.count}&offset=0`, {
+		fetch(`https://pokeapi.co/api/v2/pokemon?limit=${this.itemCount}&offset=0`, {
 			method: "GET",
 			headers: { Accept: "application/json" },
 			redirect: "follow",
@@ -96,7 +86,7 @@ class MyStore {
 	}
 
 	parseItems = (items_json) => {
-		const fetchedItems = items_json.results; // TODO: Recursive fetch? result.results: List<{ name, url }>
+		const fetchedItems = items_json.results;
 		fetchedItems.forEach((item) => {
 			fetch(item.url, {
 				method: "GET",
@@ -126,7 +116,6 @@ class MyStore {
 		console.error(error);
 	}
 
-	// TODO: Make sure this is MobX-compliant.
 	setItemQuantity = (itemId, quantity) => {
 		quantity <= 0
 			? this.cart.delete(itemId)

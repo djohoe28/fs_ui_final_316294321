@@ -1,4 +1,3 @@
-// TODO: Preferred Currency?
 const Users = new Map([
 	[
 		"admin",

@@ -6,7 +6,7 @@ import UserContext from "../modules/UserContext";
 
 const CustomerOptions = observer(function CustomerOptions() {
 	const userContext = useContext(UserContext);
-	const [state, setState] = useState(store.currency);
+	const [state, setState] = useState(store.defaultCurrency);
 	const handleSelectChange = useCallback((e) => {
 		setState(e.target.value);
 	}, [setState]);
@@ -22,7 +22,11 @@ const CustomerOptions = observer(function CustomerOptions() {
 			<summary>Customer Options</summary>
 			<label htmlFor="currency">Currency: </label>
 			<select name="currency" onChange={handleSelectChange}>
-				{keys(store.rates).map(currencyKey => <option key={currencyKey} value={currencyKey}>{currencyKey} (= {Number(1.0 / store.rates.get(currencyKey)).toLocaleString(undefined, { style: "currency", currency: store.currency })})</option>)}
+				{keys(store.rates).map(currencyKey => {
+					const reverseRate = Number(1.0 / store.rates.get(currencyKey)); // NOTE: `1 ${state} = ${reverseRate} ${store.defaultCurrency}`
+					const reverseRateString = reverseRate.toLocaleString(undefined, { style: "currency", currency: store.defaultCurrency });
+					return <option key={currencyKey} value={currencyKey}>{currencyKey} (= {reverseRateString})</option>
+				})}
 			</select>
 			<button type="reset">Reset</button>
 			<button type="submit">Submit</button>

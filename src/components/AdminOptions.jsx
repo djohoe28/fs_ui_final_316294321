@@ -46,13 +46,13 @@ const generations = [
 ]
 
 const AdminOptions = observer(function AdminOptions() {
-	const [state, setState] = useState(store.count);
+	const [state, setState] = useState(store.itemCount);
 	const handleSelectChange = useCallback((e) => {
 		setState(e.target.value);
 	}, [setState]);
 	const handleSubmit = useCallback((e) => {
 		e.preventDefault();
-		store.count = parseInt(state);
+		store.itemCount = parseInt(state);
 	}, [state]);
 	return <form onSubmit={handleSubmit}>
 		<details open>
