@@ -5,11 +5,7 @@ const ThemeControl = function ThemeControl() {
 	const themeContext = useContext(ThemeContext);
 	return (
 		<button
-			onClick={() =>
-				themeContext.dispatch({
-					type: "TOGGLE",
-				})
-			}
+			onClick={() => themeContext.dispatch({ type: "TOGGLE" })}
 		>
 			Current Mode: {themeContext.state}
 		</button>

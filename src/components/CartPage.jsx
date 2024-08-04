@@ -3,6 +3,7 @@ import MyStore from "./MyStore";
 import InventoryTable from "./InventoryTable";
 import { useCallback } from "react";
 import store from "./MyStore";
+import ResetButton from "./ResetButton";
 
 const CartPage = observer(function CartPage() {
 
@@ -14,7 +15,7 @@ const CartPage = observer(function CartPage() {
 
 	const handleReset = useCallback((event)=>{
 		event.preventDefault();
-		store.emptyCart();
+		store.clearCart();
 	}, []);
 	//#endregion
 
@@ -23,7 +24,7 @@ const CartPage = observer(function CartPage() {
 			<h1>Cart</h1>
 			<InventoryTable itemIds={MyStore.cart_keys} />
 			<button type="submit">Checkout</button>
-			<button type="reset">Empty Cart</button>
+			<ResetButton text="Clear Cart" />
 		</form>
 	);
 });

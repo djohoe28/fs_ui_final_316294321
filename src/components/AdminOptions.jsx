@@ -1,6 +1,7 @@
 import { useCallback, useState } from "react";
 import { observer } from "mobx-react";
 import store from "./MyStore";
+import ResetButton from "./ResetButton";
 
 const generations = [
 	{
@@ -61,7 +62,7 @@ const AdminOptions = observer(function AdminOptions() {
 			<select name="generation" onChange={handleSelectChange}>
 				{generations.map(({ name, value }) => <option key={value} value={value}>#{value} ~ {name}</option>)}
 			</select>
-			<button type="reset">Reset</button>
+			<ResetButton text="Reset" />
 			<button type="submit">Submit</button>
 		</details>
 	</form>

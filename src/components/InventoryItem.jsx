@@ -3,6 +3,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import store from "./MyStore";
 import ImageDisplay from "./ImageDisplay";
 import PriceDisplay from "./PriceDisplay";
+import ResetButton from "./ResetButton";
 
 const MIN_ITEM_QUANTITY = 0; // NOTE: Currently, this is only for refactoring purposes.
 const MAX_ITEM_QUANTITY = 999; // NOTE: Completely arbitray, intended to stop text/number overflow.
@@ -32,7 +33,11 @@ const InventoryItem = observer(function InventoryItem({ itemId }) {
 		},
 		[quantityAsNumber, setQuantity]
 	);
-	const handleDelete = useCallback(() => setQuantity("0"), [setQuantity]);
+	const handleDelete = useCallback((event) => {
+		// NOTE: Since we're using ResetButton outside of a form, we prevent the default "reset" behavior here.
+		event.preventDefault();
+		setQuantity("0");
+	}, [setQuantity]);
 	useEffect(() => {
 		// NOTE: Performance-wise, this belongs in `handleQuantityChange`; Concern-wise, this is a re/action => effect
 		store.setItemQuantity(itemId, quantityAsNumber);
@@ -56,16 +61,16 @@ const InventoryItem = observer(function InventoryItem({ itemId }) {
 					value={quantity}
 					onChange={handleQuantityChange}
 				/>
-				<button type="reset" onClick={handleDelete}>
-					x
-				</button>
 			</td>
 			<td>
-				{quantityAsNumber > 0 ? (
-					<>
-						<PriceDisplay getPrice={() => quantityAsNumber * _itemDetails.price} />
-					</>
-				) : null}
+				{quantityAsNumber > 0
+					? <ResetButton onClick={handleDelete} text="x" />
+					: null}
+			</td>
+			<td>
+				{quantityAsNumber > 0
+					? <PriceDisplay getPrice={() => quantityAsNumber * _itemDetails.price} />
+					: null}
 			</td>
 			<td>
 				<ImageDisplay

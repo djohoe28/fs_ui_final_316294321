@@ -134,7 +134,7 @@ class MyStore {
 		this.cart.clear();
 	}
 
-	emptyCart = () => {
+	clearCart = () => {
 		this.cart.clear();
 	}
 }

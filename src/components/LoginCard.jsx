@@ -2,6 +2,7 @@ import { useCallback, useContext, useState } from "react";
 import UserContext from "../modules/UserContext";
 import Users from "../database/users";
 import { Navigate } from "react-router-dom";
+import ResetButton from "./ResetButton";
 // import TextDisplay from "./TextDisplay";
 
 const LoginCard = () => {
@@ -83,7 +84,7 @@ const LoginCard = () => {
 				</p>
 				<p>
 					<button type="submit">Login</button>
-					<button type="reset">Reset</button>
+					<ResetButton text="Reset" />
 				</p>
 			</form>
 	);

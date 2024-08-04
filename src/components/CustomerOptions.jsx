@@ -3,6 +3,7 @@ import { observer } from "mobx-react";
 import store from "./MyStore";
 import { keys } from "mobx";
 import UserContext from "../modules/UserContext";
+import ResetButton from "./ResetButton";
 
 const CustomerOptions = observer(function CustomerOptions() {
 	const userContext = useContext(UserContext);
@@ -28,7 +29,7 @@ const CustomerOptions = observer(function CustomerOptions() {
 					return <option key={currencyKey} value={currencyKey}>{currencyKey} (= {reverseRateString})</option>
 				})}
 			</select>
-			<button type="reset">Reset</button>
+			<ResetButton text="Reset" />
 			<button type="submit">Submit</button>
 		</details>
 	</form>
