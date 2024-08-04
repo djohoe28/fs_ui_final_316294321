@@ -9,7 +9,7 @@ const Navbar = () => {
 	const userContext = useContext(UserContext);
 	return (
 		<nav>
-			<ImageDisplay getSrc={() => store.logoBlobSrc} />
+			<Link to="/"><ImageDisplay getSrc={() => store.logoBlobSrc} getAlt={() => "Home"} /></Link>
 			{userContext.state ? <Link to="options">[{userContext.state?.name}]</Link> : <Link to="login">Login</Link>}
 			<Link to="inventory">Inventory</Link>
 			{userContext.state ? <Link to="cart">Cart</Link> : <></>}

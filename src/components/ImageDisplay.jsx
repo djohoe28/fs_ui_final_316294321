@@ -7,8 +7,8 @@ import { observer } from "mobx-react";
  *
  * @see https://mobx.js.org/react-optimizations.html#function-props-
  */
-const ImageDisplay = observer(function ImageDisplay({ getSrc }) {
-	return <img src={getSrc()} />;
+const ImageDisplay = observer(function ImageDisplay({ getSrc, getAlt }) {
+	return <img src={getSrc()} alt={getAlt()} />;
 });
 
 export default ImageDisplay;

@@ -72,8 +72,8 @@ const InventoryItem = observer(function InventoryItem({ itemId }) {
 					getSrc={() =>
 						_itemDetails.image_src ?? store.logoBlobSrc
 					}
+					getAlt={() => _itemDetails.image_src ?? store.logoBlobSrc}
 				/>
-				{_itemDetails.order}
 			</td>
 		</tr>
 	);
