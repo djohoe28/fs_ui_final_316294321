@@ -6,12 +6,14 @@ import LoginCard from "./components/LoginCard";
 import CartPage from "./components/CartPage";
 import ErrorPage from "./components/ErrorPage";
 import UserOptions from "./components/UserOptions";
+import TitlePage from "./components/TitlePage";
 
 function App() {
 	return (
 		<BrowserRouter>
 			<Routes>
 				<Route path="/" element={<HomePage />}>
+					<Route path="/" element={<TitlePage />} />
 					<Route path="/login" element={<LoginCard />} />
 					<Route path="/inventory" element={<InventoryPage />} />
 					<Route path="/cart" element={<CartPage />} />
