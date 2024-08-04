@@ -1,72 +1,82 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+	max-width: 1280px;
+	margin: 0 auto;
+	padding: 2rem;
+	text-align: center;
 }
 
 .logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+	height: 6em;
+	padding: 1.5em;
+	will-change: filter;
+	transition: filter 300ms;
 }
 .logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+	filter: drop-shadow(0 0 2em #646cffaa);
 }
 .logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+	filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
 @keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+	a:nth-of-type(2) .logo {
+		animation: logo-spin infinite 20s linear;
+	}
 }
 
 .card {
-  padding: 2em;
+	padding: 2em;
 }
 
 .read-the-docs {
-  color: #888;
+	color: #888;
 }
 
 /* TODO: Style Here */
+
 img {
-  width: 5em;
+	width: 5em;
 }
 
 input[type="number"] {
-  width: 3em;
+	width: 3em;
 }
 
-body.dark-mode * {
-  color: white;
-  background-color: black;
-}
-
-nav, footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+nav,
+footer {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 }
 
 .load-progress {
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
+	display: flex;
+	justify-content: space-evenly;
+	align-items: center;
 }
 
 .hidden {
-  display: none;
+	display: none;
+}
+
+body:not(.dark-mode) {
+	color-scheme: light;
+	color: #213547;
+	background-color: #ffffff;
+	a:hover {
+		color: #747bff;
+	}
+	button {
+		color: #333333;
+		background-color: #f0f0f0;
+	}
 }
