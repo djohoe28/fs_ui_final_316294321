@@ -3,13 +3,43 @@ import { keys, makeAutoObservable, reaction } from "mobx";
 class MyStore {
 	constructor() {
 		//#region Properties
-		this.logoBlob = undefined;
+		/** The root URL of the Exchange Rates API. */
+		this._ratesAPI = "https://open.er-api.com/v6/latest/";
+		/** The URL of the logo image to be fetched. */
+		this._logoUrl = "https://pokeshop.co.il/wp-content/uploads/2022/07/2020-pokeshop-logos-1.png";
+		/** The loaded blob of the logo image. */
+		this._logoBlob = undefined;
+		/** The Object URL of the loaded blob of the logo image. */
 		this.logoBlobSrc = "";
-		this.defaultCurrency = "USD"; // NOTE: This is expected to be the currency used under `items.price` as well.
-		this.itemCount = 9; // 0 <= count <= 1025
-		this.items = new Map(); // NOTE: Map<id: number, item_details: { name: string, price: number, order: number, image_src: string }>
-		this.cart = new Map(); // NOTE: Map<id: number, cart_details: { order: number, quantity: number }>
-		this.rates = new Map(); // NOTE: Map<currency: string, rate: number> (where `1 ${defaultCurrency} = ${rate} ${currency})
+		/**
+		 * The default currency used in the store. Used as baseline for exchange rates.
+		 * NOTE: This is expected to be the currency used under `items.price` as well.
+		 */
+		this.defaultCurrency = "USD"; // 
+		/**
+		 * How many items to fetch from the API.
+		 * Used as dev-mode shorthand for making changes to the "inventory".
+		 * Available values: 0 <= count <= 1025
+		 */
+		this.itemCount = 9;
+		/**
+		 * Map of item IDs to their details (name, price, order, image source).
+		 * 
+		 * @type {Map<number, { name: string, price: number, order: number, image_src: string }>}
+		 */
+		this.items = new Map();
+		/**
+		 * Map of item IDs to their cart details (quantity and order).
+		 * @type {Map<number, { order: number, quantity: number }>}
+		 */
+		this.cart = new Map();
+		/**
+		 * Map of currency codes to their exchange rate to the default currency.
+		 * @description 1 {@link defaultCurrency} = {@link rates}[currency_code] {currency_code}
+		 * 
+		 * @type {Map<string, number>}
+		 */
+		this.rates = new Map();
 		//#endregion
 		makeAutoObservable(this);
 		//#region Reactions
@@ -49,8 +79,13 @@ class MyStore {
 		return total;
 	}
 
+	/**
+	 * The API Endpoint for the default currency's exchange rates.
+	 */
+	get currencyRatesUrl() { return new URL(this.defaultCurrency, this._ratesAPI); }
+
 	fetchRates = () => {
-		fetch(`https://open.er-api.com/v6/latest/${this.defaultCurrency}`).then((rates_res) => rates_res.json()).then((rates_json) => this.setRates(rates_json)).catch((error) => this.handleError(error));
+		fetch(this.currencyRatesUrl).then((rates_res) => rates_res.json()).then((rates_json) => this.setRates(rates_json)).catch((error) => this.handleError(error));
 	}
 
 	setRates = (rates_json) => {
@@ -61,17 +96,15 @@ class MyStore {
 	}
 
 	fetchLogo = () => {
-		fetch(
-			"https://raw.githubusercontent.com/PokeAPI/media/master/logo/pokeapi_256.png"
-		)
+		fetch(this._logoUrl)
 			.then((logo_res) => logo_res.blob())
 			.then((logo_blob) => this.setLogoFromBlob(logo_blob))
 			.catch((error) => console.error(error));
 	}
 
 	setLogoFromBlob = (logo_blob) => {
-		this.logoBlob = logo_blob;
-		this.logoBlobSrc = URL.createObjectURL(this.logoBlob);
+		this._logoBlob = logo_blob;
+		this.logoBlobSrc = URL.createObjectURL(this._logoBlob);
 	}
 
 	fetchItems = () => {
@@ -126,7 +159,7 @@ class MyStore {
 	}
 
 	checkout = () => {
-		// NOTODO: Implement.
+		// NOTODO:	Implement.
 		// NOTE:	Since the APIs are mostly accessed via the `store` object,
 		//			it's probably fine to do this here.
 		//			Plus, you get immediate access to the `cart` property from here!
