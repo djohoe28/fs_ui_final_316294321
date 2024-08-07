@@ -3,6 +3,7 @@ const Footer = () => (<footer>
 	<a href="https://www.telhai.tech/">Tel Hai Engineering</a>
 	<a href="https://pokeapi.co/">PokeAPI</a>
 	<a href="https://www.exchangerate-api.com">Exchange Rate API</a>
+	<a href="https://pokeshop.co.il/">Logo by PokeShop</a>
 </footer>);
 
 export default Footer;
