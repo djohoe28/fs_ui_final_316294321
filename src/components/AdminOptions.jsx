@@ -4,49 +4,6 @@ import ResetButton from "./ResetButton";
 import SubmitButton from "./SubmitButton";
 import store from "../modules/MyStore";
 
-const generations = [
-	{
-		name: "Kanto Starters",
-		value: 9,
-	},
-	{
-		name: "Generation I (RGBY)",
-		value: 151,
-	},
-	{
-		name: "Generation II (GSC)",
-		value: 251,
-	},
-	{
-		name: "Generation III (RSE)",
-		value: 386,
-	},
-	{
-		name: "Generation IV (DPPt)",
-		value: 493,
-	},
-	{
-		name: "Generation V (B2W2)",
-		value: 649,
-	},
-	{
-		name: "Generation VI (XY)",
-		value: 721,
-	},
-	{
-		name: "Generation VII (USUM)",
-		value: 809,
-	},
-	{
-		name: "Generation VIII (SwSh + PLA)",
-		value: 905,
-	},
-	{
-		name: "Generation IX (SV + DLC)",
-		value: 1025,
-	}
-]
-
 const AdminOptions = observer(function AdminOptions() {
 	const [state, setState] = useState(store.itemCount);
 	const handleSelectChange = useCallback((e) => {
@@ -62,7 +19,7 @@ const AdminOptions = observer(function AdminOptions() {
 			<summary>Admin Options</summary>
 			<label htmlFor="generation">Latest Available Stock: </label>
 			<select name="generation" onChange={handleSelectChange}>
-				{generations.map(({ name, value }) => <option key={value} value={value}>#{value} ~ {name}</option>)}
+				{store._generations.map(({ name, value }) => <option key={value} value={value}>#{value} ~ {name}</option>)}
 			</select>
 			<ResetButton text="Reset" />
 			<SubmitButton text="Submit" />
