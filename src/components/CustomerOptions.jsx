@@ -1,6 +1,6 @@
 import { useCallback, useContext, useState } from "react";
 import { observer } from "mobx-react";
-import store from "./MyStore";
+import store from "../modules/MyStore";
 import { keys } from "mobx";
 import UserContext from "../modules/UserContext";
 import ResetButton from "./ResetButton";

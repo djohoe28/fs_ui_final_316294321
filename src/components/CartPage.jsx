@@ -1,8 +1,7 @@
 import { observer } from "mobx-react";
-import MyStore from "./MyStore";
 import InventoryTable from "./InventoryTable";
 import { useCallback } from "react";
-import store from "./MyStore";
+import store from "../modules/MyStore";
 import ResetButton from "./ResetButton";
 import SubmitButton from "./SubmitButton";
 
@@ -24,7 +23,7 @@ const CartPage = observer(function CartPage() {
 	return (
 		<form onSubmit={handleSubmit} onReset={handleReset}>
 			<h1>Cart</h1>
-			<InventoryTable itemIds={MyStore.cart_keys} />
+			<InventoryTable itemIds={store.cart_keys} />
 			<SubmitButton text="Checkout" />
 			<ResetButton text="Clear Cart" />
 		</form>

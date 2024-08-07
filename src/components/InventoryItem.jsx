@@ -1,6 +1,6 @@
 import { observer } from "mobx-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import store from "./MyStore";
+import store from "../modules/MyStore";
 import ImageDisplay from "./ImageDisplay";
 import PriceDisplay from "./PriceDisplay";
 import ResetButton from "./ResetButton";

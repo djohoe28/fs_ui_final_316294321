@@ -1,5 +1,5 @@
 import InventoryItems from "./InventoryItems";
-import store from "./MyStore";
+import store from "../modules/MyStore";
 import PriceDisplay from "./PriceDisplay";
 
 // TODO: react/prop-types

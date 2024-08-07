@@ -1,5 +1,5 @@
 import { observer } from "mobx-react";
-import store from "./MyStore";
+import store from "../modules/MyStore";
 import InventoryTable from "./InventoryTable";
 import LoadProgress from "./LoadProgress";
 

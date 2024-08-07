@@ -1,7 +1,7 @@
 import { observer } from "mobx-react";
 import { useContext, useMemo } from "react";
 import UserContext from "../modules/UserContext";
-import store from "./MyStore";
+import store from "../modules/MyStore";
 
 /**
  * This component is used to dereference object values as late as possible.

@@ -1,8 +1,8 @@
 import { useCallback, useState } from "react";
 import { observer } from "mobx-react";
-import store from "./MyStore";
 import ResetButton from "./ResetButton";
 import SubmitButton from "./SubmitButton";
+import store from "../modules/MyStore";
 
 const generations = [
 	{

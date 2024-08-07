@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import ThemeControl from "./ThemeControl";
 import ImageDisplay from "./ImageDisplay";
-import store from "./MyStore";
+import store from "../modules/MyStore";
 import { useContext } from "react";
 import UserContext from "../modules/UserContext";
 
