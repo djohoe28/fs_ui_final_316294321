@@ -4,6 +4,13 @@ import ResetButton from "./ResetButton";
 import SubmitButton from "./SubmitButton";
 import store from "../modules/MyStore";
 
+/**
+ * AdminOptions component.
+ *
+ * @description This component provides a form for administrators to update the latest available stock.
+ * @uses MyStore MobX store to retrieve and update the item count.
+ * @return {JSX.Element} The AdminOptions form component.
+ */
 const AdminOptions = observer(function AdminOptions() {
 	const [state, setState] = useState(store.itemCount);
 	const handleSelectChange = useCallback((e) => {

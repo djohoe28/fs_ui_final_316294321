@@ -5,6 +5,13 @@ import store from "../modules/MyStore";
 import ResetButton from "./ResetButton";
 import SubmitButton from "./SubmitButton";
 
+/**
+ * CartPage component.
+ *
+ * @description This component displays the current cart contents and provides options to checkout or clear the cart.
+ * @uses MyStore MobX store to retrieve the cart contents and perform checkout and clear cart actions.
+ * @return {JSX.Element} The CartPage component, including the cart contents and action buttons.
+ */
 const CartPage = observer(function CartPage() {
 
 	//#region Callbacks

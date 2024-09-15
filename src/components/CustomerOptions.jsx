@@ -6,6 +6,13 @@ import UserContext from "../modules/UserContext";
 import ResetButton from "./ResetButton";
 import SubmitButton from "./SubmitButton";
 
+/**
+ * CustomerOptions component.
+ *
+ * @description This component allows users to select their preferred currency and submit their choice.
+ * @uses MyStore MobX store to retrieve the available currencies and perform the currency selection.
+ * @return {JSX.Element} The CustomerOptions component, including the currency selection dropdown and submit button.
+ */
 const CustomerOptions = observer(function CustomerOptions() {
 	const userContext = useContext(UserContext);
 	const [state, setState] = useState(store.defaultCurrency);

@@ -5,8 +5,17 @@ import CustomerOptions from "./CustomerOptions";
 import LogoutButton from "./LogoutButton";
 import { Navigate } from "react-router-dom";
 
-// NOTE:	UserOptions appears for all *registered* users (regardless of type)
-// 			AdminOptions appears for all *admin* users
+
+/**
+ * UserOptions component.
+ * 
+ * UserOptions appears for all *registered* users (regardless of type),
+ * whereas AdminOptions appears for all *admin* users
+ * 
+ * @description This component provides a dropdown menu for users to access their account settings.
+ * @uses UserContext MobX store to retrieve the user's authentication status.
+ * @return {JSX.Element} The UserOptions component, including the dropdown menu and logout button.
+ */
 const UserOptions = () => {
 	const userContext = useContext(UserContext);
 

@@ -8,6 +8,14 @@ import ResetButton from "./ResetButton";
 const MIN_ITEM_QUANTITY = 0; // NOTE: Currently, this is only for refactoring purposes.
 const MAX_ITEM_QUANTITY = 999; // NOTE: Completely arbitray, intended to stop text/number overflow.
 
+/**
+ * InventoryItem component.
+ *
+ * @description This component displays a single item from the inventory, with its name, price, quantity, total price, and image.
+ * @param {Object} props - The props for the component.
+ * @param {string} props.itemId - The ID of the item to display.
+ * @return {JSX.Element} The InventoryItem component.
+ */
 const InventoryItem = observer(function InventoryItem({ itemId }) {
 	const [quantity, setQuantity] = useState(
 		`${store.cart.get(itemId)?.quantity ?? MIN_ITEM_QUANTITY}`

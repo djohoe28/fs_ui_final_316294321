@@ -1,3 +1,8 @@
+
+/**
+ * A simple footer component, providing links to the various APIs and resources used in this project.
+ * @returns {JSX.Element} The footer component.
+ */
 const Footer = () => (<footer>
 	<span>Powered by:</span>
 	<a href="https://www.telhai.tech/">Tel Hai Engineering</a>

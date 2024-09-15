@@ -8,6 +8,17 @@ import ErrorPage from "./components/ErrorPage";
 import UserOptions from "./components/UserOptions";
 import TitlePage from "./components/TitlePage";
 
+/**
+ * The main entry point for the application.
+ *
+ * This component provides a provider for the UserContext and ThemeContext,
+ * and renders the main layout elements of the application.
+ *
+ * The component also defines the main routes of the application, including
+ * the root route, which renders the TitlePage component.
+ *
+ * @returns {JSX.Element} The main App component.
+ */
 function App() {
 	return (
 		<BrowserRouter>

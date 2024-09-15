@@ -1,6 +1,16 @@
 import { keys, makeAutoObservable, reaction } from "mobx";
 
+/**
+ * Represents the application's store, managing data and state.
+ */
 class MyStore {
+	/**
+	 * The constructor of the MyStore class, initializing the properties and MobX observables.
+	 * The constructor also sets up the following reactions:
+	 * - On change of `itemCount`, the cart contents are updated (items with IDs greater than `itemCount` are removed),
+	 *   and the items and rates are refetched.
+	 * - On change of `items`, the cart contents are updated (items not in `items` are removed).
+	 */
 	constructor() {
 		//#region Properties
 		/** The root URL of the Exchange Rates API. */
@@ -106,14 +116,27 @@ class MyStore {
 		this.fetchRates();
 	}
 
+	/**
+	 * Returns an array of item IDs, sorted by their order ( ascending ).
+	 * @returns {string[]} An array of item IDs.
+	 */
 	get item_keys() {
 		return keys(this.items).slice().sort((a, b) => this.items.get(a).order - this.items.get(b).order);
 	}
 
+	/**
+	 * Returns an array of item IDs in the cart, sorted by their order ( ascending ).
+	 * @returns {string[]} An array of item IDs.
+	 */
 	get cart_keys() {
 		return keys(this.cart).slice().sort((a, b) => this.cart.get(a).order - this.cart.get(b).order);
 	}
 
+	/**
+	 * Returns the total cost of all items in the cart, calculated by summing the cost of each item
+	 * multiplied by its quantity.
+	 * @returns {number} The total cost of all items in the cart.
+	 */
 	get total() {
 		// NOTE: Aggregate total; iterate through items in cart, and add their price times quantity to total.
 		let total = 0;
@@ -130,10 +153,19 @@ class MyStore {
 	 */
 	get currencyRatesUrl() { return new URL(this.defaultCurrency, this._ratesAPI); }
 
+	/**
+	 * Fetches the exchange rates from the Exchange Rates API.
+	 * @returns {Promise} A promise that resolves when the rates have been fetched.
+	 */
 	fetchRates = () => {
 		fetch(this.currencyRatesUrl).then((rates_res) => rates_res.json()).then((rates_json) => this.setRates(rates_json)).catch((error) => this.handleError(error));
 	}
 
+	/**
+	 * Sets the exchange rates in the store.
+	 * @param {object} rates - The exchange rates to set.
+	 * @returns {void}
+	 */
 	setRates = (rates_json) => {
 		this.rates = new Map();
 		for (const [key, value] of Object.entries(rates_json["rates"])) {
@@ -141,6 +173,10 @@ class MyStore {
 		}
 	}
 
+	/**
+	 * Fetches the logo image from the specified URL.
+	 * @returns {Promise} A promise that resolves when the logo has been fetched
+	 */
 	fetchLogo = () => {
 		fetch(this._logoUrl)
 			.then((logo_res) => logo_res.blob())
@@ -148,11 +184,20 @@ class MyStore {
 			.catch((error) => console.error(error));
 	}
 
+	/**
+	 * Sets the logo image in the store from a blob.
+	 * @param {Blob} logo_blob - The logo image blob.
+	 * @returns {void}
+	 */	
 	setLogoFromBlob = (logo_blob) => {
 		this._logoBlob = logo_blob;
 		this.logoBlobSrc = URL.createObjectURL(this._logoBlob);
 	}
 
+	/**
+	 * Fetches a list of items from the Pokémon API.
+	 * @returns {Promise} A promise that resolves when the items have been fetched.
+	 */
 	fetchItems = () => {
 		fetch(`https://pokeapi.co/api/v2/pokemon?limit=${this.itemCount}&offset=0`, {
 			method: "GET",
@@ -164,6 +209,11 @@ class MyStore {
 			.catch((error) => this.handleError(error));
 	}
 
+	/**
+	 * Parses a list of items from the API response.
+	 * @param {object} items_json - The JSON response from the API.
+	 * @returns {void}
+	 */
 	parseItems = (items_json) => {
 		const fetchedItems = items_json.results;
 		fetchedItems.forEach((item) => {
@@ -178,6 +228,11 @@ class MyStore {
 		});
 	}
 
+	/**
+	 * Parses the item details from the API response.
+	 * @param {object} details_json - The JSON response from the API.
+	 * @returns {void}
+	 */
 	parseItemDetails = (details_json) => {
 		const key = details_json.id;
 		const value = {
@@ -190,11 +245,22 @@ class MyStore {
 		this.items.set(key, value);
 	}
 
+	/**
+	 * Handles any errors that occur during API requests or other operations.
+	 * @param {Error} error - The error that occurred.
+	 * @returns {void}
+	 */
 	handleError = (error) => {
 		this.state = "error";
 		console.error(error);
 	}
 
+	/**
+	 * Sets the quantity of an item in the cart.
+	 * @param {string} itemId - The ID of the item to update.
+	 * @param {number} quantity - The new quantity of the item.
+	 * @returns {void}
+	 */
 	setItemQuantity = (itemId, quantity) => {
 		quantity <= 0
 			? this.cart.delete(itemId)
@@ -204,6 +270,10 @@ class MyStore {
 			});
 	}
 
+	/**
+	 * Simulates a checkout operation by clearing the cart and displaying a success message.
+	 * @returns {void}
+	 */
 	checkout = () => {
 		// NOTODO:	Implement.
 		// NOTE:	Since the APIs are mostly accessed via the `store` object,
@@ -213,6 +283,10 @@ class MyStore {
 		this.cart.clear();
 	}
 
+	/**
+	 * Clears all items from the cart.
+	 * @returns {void}
+	 */
 	clearCart = () => {
 		this.cart.clear();
 	}

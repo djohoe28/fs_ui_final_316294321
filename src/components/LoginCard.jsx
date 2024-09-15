@@ -6,6 +6,15 @@ import ResetButton from "./ResetButton";
 import SubmitButton from "./SubmitButton";
 // import TextDisplay from "./TextDisplay";
 
+/**
+ * A component that displays a login form.
+ *
+ * If the user is already logged in, the component will redirect them to the options page.
+ *
+ * The component will dispatch a "TRY_LOGIN" action to the UserContext when the form is submitted.
+ *
+ * @returns {JSX.Element} The LoginCard component.
+ */
 const LoginCard = () => {
 	// External States & Contexts
 	const userContext = useContext(UserContext);

@@ -5,6 +5,17 @@ import store from "../modules/MyStore";
 import { useContext } from "react";
 import UserContext from "../modules/UserContext";
 
+/**
+ * The main navigation bar component.
+ *
+ * This component displays the main navigation options for the application,
+ * including links to the homepage, login page, inventory page, and cart page.
+ *
+ * The component also displays a link to the user options page if the user is logged in.
+ *
+ * @returns {JSX.Element} The Navbar component.
+ */
+
 const Navbar = () => {
 	const userContext = useContext(UserContext);
 	return (

@@ -2,7 +2,15 @@ import InventoryItems from "./InventoryItems";
 import store from "../modules/MyStore";
 import PriceDisplay from "./PriceDisplay";
 
-// TODO: react/prop-types
+/**
+ * InventoryTable component.
+ *
+ * @description This component displays the current cart contents.
+ * @todo react/prop-types
+ * @param {Object} props - The props for the component.
+ * @param {string[]} props.itemIds - The IDs of the items to display.
+ * @return {JSX.Element} The InventoryTable component.
+ */
 const InventoryTable = (function InventoryTable({ itemIds }) {
 	return (
 		<table>
