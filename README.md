@@ -1,5 +1,7 @@
 # Full Stack - Final Project
 
+https://github.com/djohoe28/fs_ui_final_316294321
+
 ## Credits
 Student: [Jonathan Eddie Amir](https://github.com/djohoe28/fs_ui_final_316294321) (ID: 316294321)
 
@@ -31,7 +33,7 @@ because I forgot to document a lot of things, and there's only 2 hours left to s
 
 The same note applies to *most* of the documentation within the .jsx files in this project;
 
-Please check the commit from September 15th, 2024 to see which parts were AI-generated.
+Please check [this commit](https://github.com/djohoe28/fs_ui_final_316294321/commit/40bfe38cd6af0ec09d23390efe41dc4122eb4fa8) (September 15th, 2024) to see which parts were AI-generated.
 
 ## HomePage ([Outlet](/src/components/HomePage.jsx))
 The HomePage component is the main landing page of the application,
